@@ -1,0 +1,74 @@
+/* Form container */
+#invoiceForm {
+    
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    width:120% ; 
+    height: 60%;
+    margin-left: 150px;
+  }
+ 
+  
+
+  .D_1 {
+    display: flex;
+    justify-content: space-between; 
+    margin-bottom: 3%;
+  }
+  
+
+  /* Form inputs */
+  input[type="text"],
+  input[type="date"],
+  input[type="file"],
+  input[type="submit"] {
+    width: calc(90% - 5%); /* Adjust width to account for padding and border */
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-left:10% ;
+    margin-right: 2%;
+  }
+  
+  /* Submit button */
+  input[type="submit"] {
+    background-color: #512da8;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 15%;
+    display: flex;
+  justify-content: center;
+  }
+
+
+
+ 
+  
+  /* Submit button on hover */
+  input[type="submit"]:hover {
+    background-color: #9062ec;
+  }
+
+
+  label {
+    width: 45%;
+  }
+
+
+
+
+h2 {
+    font-family: cursive;
+    text-align: center;
+   margin-bottom: 5%;
+   
+    
+
+  }

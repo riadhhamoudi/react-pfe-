@@ -1,0 +1,147 @@
+.Form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 70%;
+  height: 700px;
+  margin: 0 auto;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  margin-top: 7%;
+}
+
+.info_personnel {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.info-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.avatar-container {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 100%;
+  height: auto;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.info-title {
+  text-align: left;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.info-label {
+  text-align: left;
+  display: inline-block;
+  width: 120px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.password-change-form  {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.password-change-form label {
+  text-align: left;
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.password-change-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.password-change-form input[type="password"]:focus {
+  box-shadow: 0px 0px 10px rgba(0, 128, 0, 0.2);
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+}
+
+.button-group button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 40px;
+  background-color: #512da8;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.button-group button:hover {
+  background-color: #9062ec;
+}
+
+.info-note {
+  text-align: left;
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.title1{
+
+  display: flex;
+  flex-direction: column;
+  margin-top: 1%;
+ 
+  font-family: cursive;
+  text-align: center;
+
+}
