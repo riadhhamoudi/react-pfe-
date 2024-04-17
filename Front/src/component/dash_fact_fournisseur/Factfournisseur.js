@@ -1,15 +1,15 @@
 import React from 'react';
 import  '../dash_fact_fournisseur/Fact_fournisseur.css';
-import Navbar from '../navbar/Navbar1';
 
+import Navbar1 from '../navbar/Navbar1.js'
 
 
 const Factfournisseur = () => (
-  <div>
-    <Navbar/>
-  <table>
+  <div className="all">
+  <Navbar1/>
+  <table className='tab'>
     <thead>
-      <tr>
+      <tr> 
         <th>id</th>
         <th>reférence</th>
         <th>nature</th>
@@ -18,6 +18,10 @@ const Factfournisseur = () => (
         <th>Date de création</th>
         <th>responsable</th>
         <th>action</th>
+        <th>object </th>
+        <th>Amount  </th>
+        <th> Date of Invoice </th>
+        <th>Number of PO   </th>
       </tr>
     </thead>
     <tbody>
@@ -31,11 +35,16 @@ const Factfournisseur = () => (
           <td>{project.Datedecréation}</td>
           <td>{project.responsable}</td>
           <td>{project.action}</td>
-
+          <td>{project.action}</td>
+          <td>{project.action}</td>
+          <td>{project.action}</td>
+          <td>{project.action}</td>
+         
         </tr>
       ))}
     </tbody>
   </table>
+
   </div>
 );
 
@@ -49,6 +58,7 @@ const projects = [
     nbFactures: '10',
     responsable: 'riadh',
     action:'kjnfeouizenf',
+    objet:"jfqjfjdfn"
   }, {
     id:'7200',
     Datedecréation: 'Tue, 28 Feb, 2017',
@@ -95,6 +105,114 @@ const projects = [
     responsable: 'riadh',
     action:'kjnfeouizenf',
   }, {
+    id:'7200',
+    Datedecréation: 'Tue, 28 Feb, 2017',
+    reférence: 'fh512ze',
+    nature: '3Wm',
+    Statut: 'EN cour',
+    nbFactures: '10',
+    responsable: 'riadh',
+    action:'kjnfeouizenf',
+  },{
+    id:'7200',
+    Datedecréation: 'Tue, 28 Feb, 2017',
+    reférence: 'fh512ze',
+    nature: '3Wm',
+    Statut: 'EN cour',
+    nbFactures: '10',
+    responsable: 'riadh',
+    action:'kjnfeouizenf',
+  },{
+    id:'7200',
+    Datedecréation: 'Tue, 28 Feb, 2017',
+    reférence: 'fh512ze',
+    nature: '3Wm',
+    Statut: 'EN cour',
+    nbFactures: '10',
+    responsable: 'riadh',
+    action:'kjnfeouizenf',
+  },{
+    id:'7200',
+    Datedecréation: 'Tue, 28 Feb, 2017',
+    reférence: 'fh512ze',
+    nature: '3Wm',
+    Statut: 'EN cour',
+    nbFactures: '10',
+    responsable: 'riadh',
+    action:'kjnfeouizenf',
+  },{
+    id:'7200',
+    Datedecréation: 'Tue, 28 Feb, 2017',
+    reférence: 'fh512ze',
+    nature: '3Wm',
+    Statut: 'EN cour',
+    nbFactures: '10',
+    responsable: 'riadh',
+    action:'kjnfeouizenf',
+  },{
+    id:'7200',
+    Datedecréation: 'Tue, 28 Feb, 2017',
+    reférence: 'fh512ze',
+    nature: '3Wm',
+    Statut: 'EN cour',
+    nbFactures: '10',
+    responsable: 'riadh',
+    action:'kjnfeouizenf',
+  },{
+    id:'7200',
+    Datedecréation: 'Tue, 28 Feb, 2017',
+    reférence: 'fh512ze',
+    nature: '3Wm',
+    Statut: 'EN cour',
+    nbFactures: '10',
+    responsable: 'riadh',
+    action:'kjnfeouizenf',
+  },{
+    id:'7200',
+    Datedecréation: 'Tue, 28 Feb, 2017',
+    reférence: 'fh512ze',
+    nature: '3Wm',
+    Statut: 'EN cour',
+    nbFactures: '10',
+    responsable: 'riadh',
+    action:'kjnfeouizenf',
+  },{
+    id:'7200',
+    Datedecréation: 'Tue, 28 Feb, 2017',
+    reférence: 'fh512ze',
+    nature: '3Wm',
+    Statut: 'EN cour',
+    nbFactures: '10',
+    responsable: 'riadh',
+    action:'kjnfeouizenf',
+  },{
+    id:'7200',
+    Datedecréation: 'Tue, 28 Feb, 2017',
+    reférence: 'fh512ze',
+    nature: '3Wm',
+    Statut: 'EN cour',
+    nbFactures: '10',
+    responsable: 'riadh',
+    action:'kjnfeouizenf',
+  },{
+    id:'7200',
+    Datedecréation: 'Tue, 28 Feb, 2017',
+    reférence: 'fh512ze',
+    nature: '3Wm',
+    Statut: 'EN cour',
+    nbFactures: '10',
+    responsable: 'riadh',
+    action:'kjnfeouizenf',
+  },{
+    id:'7200',
+    Datedecréation: 'Tue, 28 Feb, 2017',
+    reférence: 'fh512ze',
+    nature: '3Wm',
+    Statut: 'EN cour',
+    nbFactures: '10',
+    responsable: 'riadh',
+    action:'kjnfeouizenf',
+  },{
     id:'7200',
     Datedecréation: 'Tue, 28 Feb, 2017',
     reférence: 'fh512ze',

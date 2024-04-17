@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import './Change_pass.css';
+import Navbar1 from '../navbar/Navbar1.js'
+
+
+
 
 function Pass() {
   const [newPassword, setNewPassword] = useState('');
@@ -29,7 +33,9 @@ function Pass() {
   };
 
   return (
-    <div>
+    <div className="all">
+  <Navbar1/>
+    <Navbar1/>
       <div className='title1'>
     <h1> change your personnel information </h1>
     </div>
