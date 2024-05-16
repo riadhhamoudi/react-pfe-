@@ -1,0 +1,95 @@
+/* Edit.css */
+:root {
+  --primary-color: #667eea;   /* Vibrant blue */
+  --secondary-color: #f7f7f7; /* Very light grey for background */
+  --accent-color: #f76c6c;    /* Vibrant red for interactive elements */
+  --text-color-dark: #2d2d2d;  /* Almost black for text */
+  --text-color-light: #ffffff; /* White for text on darker backgrounds */
+  --input-background-color: #ffffff;
+  --input-border-color: #dfe1e5; /* Light grey border for inputs */
+  --input-focus-color: #a4b0be;  /* Light blue for input focus */
+  --shadow-strong: 0 8px 24px rgba(0,0,0,0.15); /* Strong shadow for emphasis */
+  --shadow-light: 0 4px 6px rgba(0,0,0,0.1);   /* Light shadow for subtle depth */
+  --font-primary: 'Helvetica Neue', Arial, sans-serif;
+}
+
+
+
+.container_edit1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.form_edit1 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 460px;
+  background: var(--secondary-color);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-strong);
+  border: 1px solid var(--input-border-color);
+  margin-top:  3%;
+}
+
+
+
+
+.input-field {
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid var(--input-border-color);
+  font-size: 16px;
+  background-color: var(--input-background-color);
+  transition: border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.input-field:focus {
+  border-color: var(--input-focus-color);
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.6);
+}
+
+
+.button_edit1 {
+    background-image: linear-gradient(135deg, #6e45e2 0%, #88d3ce 100%);
+    color: #ffffff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px; /* Maintains the pill shape */
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-image 0.4s ease-in-out, box-shadow 0.3s ease, transform 0.3s ease;
+    outline: none; /* Removes default focus border */
+    width:35%;
+  }
+  
+  .button_edit1:hover { 
+    background-image: linear-gradient(to right, #88d3ce, #6e45e2);
+    box-shadow: 0 6px 15px rgba(0, 87, 255, 0.3);
+    transform: translateY(-2px); /* Subtle lift effect */
+  }
+  
+  .button_edit1:active {
+    transform: translateY(1px); /* Mimics a press down effect */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .button_edit1:focus {
+    box-shadow: 0 0 0 4px rgba(134, 211, 206, 0.5); /* Adds a focus outline for accessibility */
+  }
+
+@media (max-width: 768px) {
+  .form_edit1 {
+      padding: 20px;
+      width: 90%;
+  }
+}

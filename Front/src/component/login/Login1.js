@@ -2,80 +2,112 @@ import React, { useState } from 'react';
 import '../login/Login.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import logo from '../logo/pngegg.png';
 
 function Login() {
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+ const [isSignUp, setIsSignUp] = useState(false);
+ const [email, setEmail] = useState('');
+ const [password, setPassword] = useState('');
+ const [errorMessage, setErrorMessage] = useState('');
 
-  const navigate = useNavigate(); // Define navigate before using it
+ const navigate = useNavigate();
 
-  const handleToggle = () => {
+ const handleToggle = () => {
     setIsSignUp(!isSignUp);
-  };
+ };
 
-  const handleEmailChange = (e) => {
+ const handleEmailChange = (e) => {
     setEmail(e.target.value);
-  };
+ };
 
-  const handlePasswordChange = (e) => {
+ const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-  };
+ };
 
-  const handleSubmit = async (e) => {
+ const validateEmail = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+ };
+
+ const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      setErrorMessage('veuillez entrer votre email et MDP');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setErrorMessage('Format de l\'email invalide');
+      return;
+    }
 
     try {
       const response = await axios.post('http://localhost:3000/api/login', {
         email,
         password
       });
-      navigate("/dashfournisseur")
-      const token = response.data.token;
+      const { token, profil } = response.data;
       localStorage.setItem('token', token);
-      
-    } catch (error) {
-      setErrorMessage('Invalid email or password');
-    }
-  };
+      localStorage.setItem('user_id', response.data.user_id);
 
-  return (
+      if (profil === 'fournisseur') {
+        navigate("/formulaire");
+      } else if (profil === 'agent BOF') {
+        navigate("/liste_factureAG");
+      } else if (profil === 'admin') {
+        navigate("/Form_admin");
+      } else { 
+        setErrorMessage('Profil invalide');
+      }
+    } catch (error) {
+      setErrorMessage('Adresse email ou mot de passe invalide');
+    }
+ };
+
+ return (
     <div className='all'>
+      <div className='titre_login'> 
+        <h4>Office de Commande Numérique</h4>
+        <h4>Bureau d'Ordre Numérique</h4>
+        <h4>Direction Centrale des Finances</h4>
+        <h4>Tunisie Telecom</h4>
+      </div>
+      <img className="logo-TT" loading="lazy" src={logo} width="15%" alt="Logo Tunisie Telecom" />
       <div className={`container ${isSignUp ? 'active' : ''}`}>
         <div className='form-container sign-up'>
           <form>
-            <h1>forgot password</h1>
+            <h1>Mot de passe oublié</h1>
             <input type='email' placeholder='Email' value={email} onChange={handleEmailChange} />
-            <button>send mail</button>
-          </form>
+            <button>Envoyer</button>
+          </form> 
         </div>
         <div className='form-container sign-in'>
           <form onSubmit={handleSubmit}>
-            <h1>Sign In</h1>
+            <h1>Connectez-vous à votre compte</h1>
             <input type='email' placeholder='Email' value={email} onChange={handleEmailChange} />
-            <input type='password' placeholder='Password' value={password} onChange={handlePasswordChange} />
-            {errorMessage && <p>{errorMessage}</p>}
-            <button>Sign In</button>
+            <input type='password' placeholder='Mot de passe' value={password} onChange={handlePasswordChange} />
+            {errorMessage && <p className='error-message'>{errorMessage}</p>}
+            <button>Connexion</button>
           </form>
         </div>
         <div className='toggle-container'>
           <div className='toggle'>
-          <div className="toggle-panel toggle-left">
-              <h1>reset password!</h1>
-              <p>Enter your email to reset your password</p>
-              <button className="hidden" onClick={handleToggle} id="login">Sign In</button>
+            <div className="toggle-panel toggle-left">
+              <h1>Réinitialisez votre mot de passe!</h1>
+              <p>Entrez votre adresse email pour réinitialiser votre mot de passe</p>
+              <button className="hidden" onClick={handleToggle} id="login">Connexion</button>
             </div>
             <div className="toggle-panel toggle-right">
-              <h1>Hello!</h1>
-              <p>if you forgot your password press this button</p>
-              <button className="hidden" onClick={handleToggle} id="register">forgot password</button>
+              <h1>Bienvenue!</h1>
+              <p>Si vous avez oublié votre mot de passe, cliquez sur ce bouton</p>
+              <button className="hidden" onClick={handleToggle} id="register">Mot de passe oublié</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
+ );
 }
 
 export default Login;

@@ -1,0 +1,115 @@
+/* General table styles */
+.all1{
+  margin-left: 12%;
+  
+}
+
+
+
+.barre{
+
+  display: flex;
+  justify-content: space-between;
+}
+
+
+table {
+
+
+  text-align: left;
+  margin: 20px 0;
+width: 100%;
+}
+
+/* Table header styles */
+th {
+  background-color: white; /* Light grey header background */
+  color: #000000; /* Dark text color for contrast */
+  font-weight: bold;
+  padding: 12px 15px;
+  border-bottom: 1px solid #ccc; /* Light grey line below the header */
+}
+
+/* Table row styles for striping */
+tr:nth-child(odd) { /* Odd rows */
+  background-color: #ffffff; /* Very light grey for odd rows */
+}
+
+tr:nth-child(even) { /* Even rows */
+  background-color: #ffffff; /* White for even rows */
+}
+
+/* Table data cell styles */
+td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd; /* Light grey border for each cell */
+}
+
+/* Hover style for rows */
+tr:hover {
+  background-color: #f1f1f1; /* Light grey background on row hover */
+}
+
+
+/* Styling for icon containers */
+.two_icons {
+  display: flex;
+  justify-content: center; /* Centering icons horizontally within the cell */
+  align-items: center; /* Centering icons vertically */
+  gap: 10px; /* Adding space between the two icons */
+}
+
+.one_icon {
+  cursor: pointer; /* Makes the icon clickable */
+  transition: transform 0.2s; /* Smooth transformation upon hover */
+}
+
+.RiFileEditFill :hover {
+  transform: scale(1.2); /* Enlarge icon on hover for better interaction visibility */
+  color: #007BFF; /* Change color on hover, choose a color that matches your theme */
+}
+
+/* Additional styles for enhancing visual feedback */
+.MdDeleteForever :hover {
+  color: #ff0000; /* Red color for the delete icon when hovered to indicate a delete action */
+}
+
+
+.add_inv {
+  cursor: pointer; /* Ensures the cursor changes to a pointer to indicate clickability */
+  transition: background-color 0.3s ease, padding 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effects */
+  padding: 10px; /* Standard padding; adjust as necessary */
+  border-radius: 5px; /* Slightly rounded corners for a subtle, modern look */
+  display: inline-block; /* Makes sure the hover effect applies to the area of the content */
+}
+
+.add_inv:hover {
+  background-image: linear-gradient(135deg, #b3b5b8 0%, #2d8cf0 100%); /* Subtle change in background color on hover */
+  padding: 12px; /* Slightly increase padding on hover */
+  transform: scale(1.05); /* Slightly scale up the element to give feedback */
+  border-radius: 10px; /* Smooth rounding of corners on hover */
+}
+
+
+
+.add_inv{
+  display: flex;
+}
+
+
+
+
+
+/* Responsive considerations for smaller screens */
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto; /* Allows table to scroll horizontally on small devices */
+  }
+}
+
+
+
+
+
+

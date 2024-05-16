@@ -1,147 +1,158 @@
-.Form {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 70%;
-  height: 700px;
-  margin: 0 auto;
-  padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  background-color: #f2f2f2;
-  margin-top: 7%;
+:root {
+  --primary-color: #5271ff;   /* A softer blue for a modern feel */
+  --secondary-color: #ffffff; /* Pure white for clean backgrounds */
+  --accent-color: #ff6b6b;    /* A vibrant, but not overpowering red for accents */
+  --error-color: #ff6b6b;     /* Use the same red for errors for consistency */
+  --text-color-dark: #333333; /* Dark gray for text for better readability */
+  --text-color-light: #ffffff; /* Pure white for text on dark backgrounds */
+  --background-color: #f4f4f8; /* A light gray that reduces eye strain */
+  --input-background-color: #ffffff; /* White for input fields to maintain focus */
+  --input-border-color: #ccd6f6; /* A lighter blue to soften the edges */
+  --shadow-color: rgba(100, 100, 111, 0.2); /* Subtle shadow for depth */
 }
 
-.info_personnel {
-  width: 48%;
+
+.allP {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  min-height: 100vh;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #fff;
 }
 
-.info-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.pos1 {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  grid-template-areas: "info form";
+  gap: 20px;
+  background: var(--secondary-color);
   padding: 20px;
-  border: 1px solid #ccc;
   border-radius: 10px;
-  background-color: #fff;
+  box-shadow: 0 10px 20px var(--shadow-color);
+  max-width: 960px;
+}
+
+.Form1 {
+  grid-area: info;
+  background: var(--input-background-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 .avatar-container {
-  width: 100px;
-  height: 100px;
-  overflow: hidden;
-  border-radius: 50%;
+  display: flex;
+  justify-content: center;
   margin-bottom: 20px;
 }
 
 .avatar {
-  width: 100%;
-  height: auto;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid var(--primary-color);
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
 }
 
-.info-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
+.avatar:hover {
+  transform: scale(1.1);
 }
 
 .info-title {
-  text-align: left;
-  margin-bottom: 20px;
+  color: var(--primary-color);
   font-size: 24px;
-  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-.info-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.info-label {
-  text-align: left;
-  display: inline-block;
-  width: 120px;
+.statistic {
   font-size: 16px;
-  font-weight: bold;
+  margin: 5px 0;
+  padding-left: 20px;
+  position: relative;
 }
 
-.password-change-form  {
-  width: 48%;
+.statistic::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.password-change-form {
+  grid-area: form;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  background: var(--input-background-color);
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px var(--shadow-color);
 }
 
-.password-change-form label {
-  text-align: left;
-  display: block;
-  margin-bottom: 10px;
-  font-size: 16px;
-  font-weight: bold;
+.old-password , .new-password , .confirm-password, .BB ,.BS {
+  padding: 12px 15px;
+  margin-top: 10px;
+  border: 2px solid var(--input-border-color);
+  border-radius: 6px;
+  background-color: var(--input-background-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+    margin-left: 25%;
 }
 
-.password-change-form input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-  font-size: 16px;
-  margin-bottom: 10px;
+.old-password , .new-password  , .confirm-password , :focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-color); 
+
 }
 
-.password-change-form input[type="password"]:focus {
-  box-shadow: 0px 0px 10px rgba(0, 128, 0, 0.2);
+
+
+
+
+.password-error {
+  color: var(--error-color);
+  font-size: 14px;
+  margin-top: 5px;
 }
 
-.button-group {
+.button-group1 {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 10px; /* Ensure some space between buttons */
+  margin-top: 20px;
+}
+.BS , .BB {
+  color: blue;
+
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px blue;
 }
 
-.button-group button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 40px;
-  background-color: #512da8;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  margin: 0 5px;
+.BS:hover, .BB:hover {
+  background-color: darken(var(--primary-color), 10%); /* Darken for depth on hover */
+  transform: translateY(-2px); /* Elevate button on hover for tactile feedback */
+  box-shadow: 0 6px 12px blue;
 }
 
-.button-group button:hover {
-  background-color: #9062ec;
+.BB {
+  background-color: white
+  ; /* For less critical buttons like 'Ignore' */
 }
 
-.info-note {
-  text-align: left;
-  margin-bottom: 20px;
-  font-size: 16px;
-  font-weight: bold;
+.BB:hover {
+  background-color: white;
 }
 
-.title1{
-
-  display: flex;
-  flex-direction: column;
-  margin-top: 1%;
- 
-  font-family: cursive;
-  text-align: center;
-
+@media (max-width: 768px) {
+  .pos1 {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+          "info"
+          "form";
+  }
 }

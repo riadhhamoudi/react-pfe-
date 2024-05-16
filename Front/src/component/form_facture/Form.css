@@ -2,24 +2,30 @@
 .invoiceForm {
     
     margin: 0 auto;
-    padding: 20px;
+    padding: 3%;
     border: 1px solid #ddd;
-    border-radius: 20px;
+    border-radius: 3%;
     background-color: #f9f9f9;
-    width:100% ; 
-    height: 60%;
-    margin-left: 0%;
-  
-  }
+    width:60% ; 
+   
+    margin-left: 15%;
+margin-bottom: 5%;
 
-  
+      
+transition: transform 0.2s, box-shadow 0.3s;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+ 
+
+
+   
  
   
 
   .D_1 {
     display: flex;
     justify-content: space-between ; 
-    margin-bottom: 3%;
+    margin-bottom: 2%;
   }
   
 
@@ -38,26 +44,12 @@
     margin-right: 2%;
   }
   
-  /* Submit button */
-  input[type="submit"] {
-    background-color: #512da8;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    width: 15%;
-    display: flex;
-  justify-content: center;
-  }
 
 
 
  
   
-  /* Submit button on hover */
-  input[type="submit"]:hover {
-    background-color: #9062ec;
-  }
+
 
 
   label {
@@ -70,8 +62,77 @@
 h2 {
     font-family: cursive;
     text-align: center;
-   margin-bottom: 5%;
-   
-    
+   margin-bottom: 3%;
+    }
 
-  }
+
+
+
+
+
+
+    .button_inv {
+      --main-focus: #2d8cf0;
+      --font-color: #aad;
+      --bg-color-sub: linear-gradient(135deg, #6e45e2 0%, #88d3ce 100%);
+      --bg-color: #323232;
+      --main-color: #dedede;
+      position: relative;
+      width: 150px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      border: 2px solid var(--main-color);
+      box-shadow: 4px 4px var(--main-color);
+      background-color: var(--bg-color);
+      border-radius: 10px;
+      overflow: hidden;
+      background-image: linear-gradient(135deg, #444 0%, #6a6a6a);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+       transition: transform 0.2s, box-shadow 0.3s;
+    }
+    
+    .button_inv, .button__icon, .button__text {
+      transition: all 0.3s;
+    }
+    
+    .button_inv .button__text {
+      transform: translateX(25px);
+      color: var(--font-color);
+      font-weight: 600;
+    }
+    
+    .button_inv .button__icon {
+      position: absolute;
+      transform: translateX(109px);
+      height: 100%;
+      width: 39px;
+      background-color: var(--bg-color-sub);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .button_inv .svg {
+      width: 20px;
+      stroke: var(--main-color);
+    }
+    
+    .button_inv:hover {
+      background-image: linear-gradient(to right, #425870, #007bff); /* semi-transparent white background */
+    }
+    
+    .button_inv:hover .button__text {
+      color: transparent;
+    }
+    
+    .button_inv:hover .button__icon {
+      width: 148px;
+      transform: translateX(0);
+    }
+    
+    .button_inv:active {
+      transform: translate(3px, 3px);
+      box-shadow: 0px 0px var(--main-color);
+    }

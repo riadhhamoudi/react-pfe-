@@ -1,0 +1,113 @@
+/* Base Container Styling */
+.containers {
+    width: 80%;
+    margin: 5% auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+   
+  /* Row and Column Styling */
+  .row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .col-md-5, .col-md-4 {
+    padding: 20px;
+  }
+  
+  .border-right {
+    border-right: 2px solid #f0f0f0;
+  }
+  
+  /* Labels and Inputs */
+  .labels {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  
+  .form-control {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  /* Password Error Message */
+  .password-error {
+    color: #ff6b6b;
+    font-size: 12px;
+  }
+  
+  /* Button Styling */
+/* General Button Styling */
+.btn {
+  padding: 10px 20px;
+  border-radius: 30px; /* Rounded pill shape */
+  border: none;
+  outline: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  background-image: linear-gradient(145deg, #6e45e2, #88d3ce);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn:hover {
+  background-image: linear-gradient(to right, #88d3ce, #6e45e2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Button Styling for Smaller Screens */
+@media (max-width: 768px) {
+  .btn {
+    width: 100%;
+    padding: 12px 0;
+  }
+}
+
+  
+  /* Vertical Separator for Visual Distinction */
+  .vertical-separator {
+    width: 1px;
+    background-color: #ddd;
+    margin: 0 25px;
+  }
+  
+  /* Responsive Design Adjustments */
+  @media (max-width: 768px) {
+    .container {
+      width: 95%;
+      margin: 10px auto;
+    }
+  
+    .row {
+      flex-direction: column;
+    }
+  
+    .border-right {
+      border-right: none;
+      border-bottom: 2px solid #f0f0f0;
+    }
+  
+    .vertical-separator {
+      display: none;
+    }
+  }
+  

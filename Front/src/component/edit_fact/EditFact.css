@@ -1,0 +1,74 @@
+
+
+.allF1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.edit-facture-form {
+    width: 100%;
+    max-width: 500px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+}
+
+.edit-facture-form form { 
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+}
+
+.edit-facture-form input,
+.edit-facture-form button {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+.edit-facture-form input {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+}
+
+.edit-facture-form input:focus {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 8px rgba(0, 86, 179, 0.5);
+}
+
+.edit-facture-form button {
+    background-color: #0056b3;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.edit-facture-form button:hover {
+    background-color: #004494;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+
+  .D_1 {
+    display: flex;
+    justify-content: space-between ; 
+    margin-bottom: 2%;
+  }
+  
+
+@media (max-width: 768px) {
+    .edit-facture-form {
+        padding: 20px;
+    }
+}

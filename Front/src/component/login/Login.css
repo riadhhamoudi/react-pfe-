@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-*{
+.all{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,62 +8,99 @@
 }
 
 body{
-    background-color: #c9d6ff;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+
+    /* background-color: #f4f5fb; */
+    background-color: #f0f6fc;
+    font-family: 'Montserrat'
+}
+
+.logo-TT{
+    position:fixed ;
+    left: 2%;
+    top: 2%; 
+}
+
+.titre_login{
+    height: auto;
+    width: 20%;
+    position: fixed;
+
+    left: 0%;
+
+    align-items: center;
+    justify-content: center;
+    padding: 100% 20px;
+    background: linear-gradient(to right, #425870, #007bff); /* semi-transparent white background */
+    color: #ffffff; /* blue color to match the logo */
+    font-family: 'Arial', sans-serif; /* modern, readable font */
+    font-size: 1.2em; /* larger font size for better visibility */
+    border-radius: 10px; /* rounded corners */
+    box-shadow: 0 2px 10000000px  #007bff; /* subtle shadow for depth */
+    border: 1px solid #ccc; /* subtle border */
+    text-align: center; /* center text alignment */
+}
+
+
+
+h3 {
+    margin: 10px 0; /* space between headings */
+
+}
+
+
+.all{
+   
+    
     display: flex;
     align-items: flex-end;
-    margin: 15px;
-    justify-content: center;
+    margin: 3%;
+    justify-content:center;
     flex-direction: column;
     height: 100vh;
+  
 }
 
 .container{
     background-color: #fff;
-    border-radius: 30px;
+    border-radius: 8%;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative;
     overflow: hidden;
-    width: 780px;
-    max-width: 100%;
-    min-height: 480px;
+    width: 55%;
+    max-width: 50%;
+    min-height: 60%;
 }
 
 .container p{
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 90%;
+    line-height: 20%;
     letter-spacing: 0.3px;
     margin: 20px 0;
 }
 
-.container span{
-    font-size: 12px;
-}
 
-.container a{
-    color: #333;
-    font-size: 13px;
-    text-decoration: none;
-    margin: 15px 0 10px;
-}
+
+
 
 .container button{
-    background-color: #512da8;
+    background-color: #007bff;
     color: #fff;
     font-size: 12px;
-    padding: 10px 45px;
+    padding: 4% 7%;
     border: 1px solid transparent;
-    border-radius: 8px;
+    border-radius: 10%;
     font-weight: 600;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    margin-top: 10px;
+    margin-top: 6%;
     cursor: pointer;
+    
 }
 
 .container button.hidden{
     background-color: transparent;
     border-color: #fff;
+    
 }
 
 .container form{
@@ -72,7 +109,7 @@ body{
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 40px;
+    padding: 0 15%;
     height: 100%;
 }
 
@@ -80,9 +117,9 @@ body{
     background-color: #eee;
     border: none;
     margin: 8px 0;
-    padding: 10px 15px;
-    font-size: 13px;
-    border-radius: 8px;
+    padding: 6% 5%;
+    font-size: 100% ;
+    border-radius: 10%;
     width: 100%;
     outline: none;
 }
@@ -142,7 +179,7 @@ body{
     height: 100%;
     overflow: hidden;
     transition: all 0.6s ease-in-out;
-    border-radius: 150px 0 0 100px;
+    border-radius: 33% 0 0 29%;
     z-index: 1000;
 }
 
@@ -152,9 +189,9 @@ body{
 }
 
 .toggle{
-    background-color: #512da8;
+    background-color: #007bff;
     height: 100%;
-    background: linear-gradient(to right, #5c6bc0, #512da8);
+    background: linear-gradient(to right, #425870, #007bff);
     color: #fff;
     position: relative;
     left: -100%;
@@ -176,11 +213,11 @@ body{
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 30px;
+    padding: 0 2%;
     text-align: center;
     top: 0;
     transform: translateX(0);
-    transition: all 0.6s ease-in-out;
+    transition: all 1s ease-in-out;
 }
 
 .toggle-left{
