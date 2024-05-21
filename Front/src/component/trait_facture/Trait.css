@@ -1,0 +1,53 @@
+/* Styles for pagination container */
+.paginationButtons {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+/* Styles for each page number and navigation button */
+.paginationButtons li {
+    margin: 0 5px;
+    border-radius: 5px;
+    border: 1px solid #007bff;
+}
+
+/* Styles for the active page */
+.paginationActive a {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    padding: 8px 16px;
+}
+
+/* Hover effects for buttons */
+.paginationButtons li a {
+    color: #007bff;
+    padding: 8px 16px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.paginationButtons li a:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+/* Styles for disabled buttons, if applicable */
+.paginationDisabled a {
+    color: grey;
+    cursor: not-allowed;
+}
+
+/* Styles for the 'Previous' and 'Next' navigation buttons */
+.previousButton a, .nextButton a {
+    font-weight: bold;
+}
+
+/* Ensure that the break label '...' is not clickable */
+.paginationButtons li.break a {
+    cursor: default;
+    background-color: transparent;
+    color: #007bff;
+}

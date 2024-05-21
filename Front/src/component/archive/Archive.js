@@ -8,6 +8,9 @@ import Navbar1 from '../navbar/Navbar_Ag.js';
 import { useNavigate } from 'react-router-dom';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
+import ReactPaginate from 'react-paginate';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 const Factfournisseur = () => {
   const [factures, setFactures] = useState([]);
@@ -50,21 +53,37 @@ const Factfournisseur = () => {
   };
 
   const handleDelete = (id) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette facture ?")) {
-      const token = localStorage.getItem('token');
-      axios.delete(`http://localhost:3000/api/del_arch/${id}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      .then(() => {
-        alert('Facture supprimée avec succès');
-        fetchFactures(); // Recharger les factures après la suppression
-      })
-      .catch(error => {
-        console.error('Erreur lors de la suppression de la facture:', error);
-        alert('Échec de la suppression de la facture');
-      });
-    }
+    confirmAlert({
+      title: 'Confirmation de suppression',
+      message: 'Êtes-vous sûr de vouloir supprimer cette facture ?',
+      buttons: [
+        {
+          label: 'Oui',
+          onClick: () => deleteFacture(id)
+        },
+        {
+          label: 'Non',
+          onClick: () => {}
+        }
+      ]
+    });
   };
+  
+  const deleteFacture = (id) => {
+    const token = localStorage.getItem('token');
+    axios.delete(`http://localhost:3000/api/del_arch/${id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(() => {
+      alert('Facture supprimée avec succès');
+      fetchFactures(); // Recharger les factures après la suppression
+    })
+    .catch(error => {
+      console.error('Erreur lors de la suppression de la facture:', error);
+      alert('Échec de la suppression de la facture');
+    });
+  };
+  
 
 
 
@@ -90,13 +109,14 @@ const Factfournisseur = () => {
     doc.save(`Facture_${facture.id}.pdf`);
   };
 
-  const handlePageClick = (number) => {
-    setCurrentPage(number);
-    const indexOfLastItem = number * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    setDisplayedFactures(factures.slice(indexOfFirstItem, indexOfLastItem));
+  const handlePageClick = (data) => {
+    const selectedPage = data.selected;
+    setCurrentPage(selectedPage);
+    const indexOfFirstItem = selectedPage * itemsPerPage;
+    const displayed = factures.slice(indexOfFirstItem, indexOfFirstItem + itemsPerPage);
+    setDisplayedFactures(displayed);
   };
-
+ 
 
 
   
@@ -162,16 +182,15 @@ const Factfournisseur = () => {
             </tbody>
           </table>
           <div className="pagination">
-            {Array.from({ length: Math.ceil(factures.length / itemsPerPage) }, (_, i) => i + 1)
-              .map(number => (
-                <button
-                  key={number}
-                  onClick={() => handlePageClick(number)}
-                  style={{ margin: 5, cursor: 'pointer' }}
-                >
-                  {number}
-                </button>
-              ))}
+          <ReactPaginate
+            previousLabel={'Précédent'}
+            nextLabel={'Suivant'}
+            breakLabel={'...'}
+            pageCount={Math.ceil(factures.length / itemsPerPage)}
+            onPageChange={handlePageClick}
+            containerClassName={'pagination'}
+            activeClassName={'active'}
+          />
           </div>
         </div>
       </div>

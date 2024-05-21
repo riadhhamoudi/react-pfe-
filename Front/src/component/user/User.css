@@ -151,7 +151,36 @@
     }
   }
 
-
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    list-style-type: none;
+  }
+  
+  .pagination li {
+    margin: 0 5px;
+  }
+  
+  .pagination li a {
+    color: #337ab7;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .pagination li a:hover {
+    background-color: #ddd;
+  }
+  
+  .pagination .active a {
+    background-color: #337ab7;
+    color: white;
+    border: 1px solid #337ab7;
+  }
+  
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {

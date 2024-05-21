@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../add_user/Add_user.css';
 import Navbar1 from '../navbar/Navbar_admin';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 function Add() {
   const [name, setFirstName] = useState('');
@@ -9,7 +11,7 @@ function Add() {
   const [telephone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
-  const [profil, setProfil] = useState('fournisseur');
+  const [profil, setProfil] = useState('fournisseur'); 
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
@@ -31,9 +33,7 @@ function Add() {
     return regex.test(email);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     if (!validateEmail(email)) {
       setEmailError('Veuillez entrer une adresse email valide.');
       return;
@@ -44,10 +44,10 @@ function Add() {
     }
 
     if (newPassword !== confirmPassword) {
-      console.log('Passwords do not match!');
+      console.log('Les mots de passe ne correspondent pas !');
       setPasswordMatch(false);
       return;
-    }
+    } 
  
     // Prepare the data to be sent
     const userData = {
@@ -60,14 +60,32 @@ function Add() {
       password: newPassword
     };
 
-    try {
+    try { 
       const response = await axios.post('http://localhost:3000/api/admin', userData);
       console.log('User added:', response.data);
-      alert('User added successfully!');
+      alert('Utilisateur ajouté avec succès !');
     } catch (error) {
       console.error('Error creating user:', error.response ? error.response.data : error);
-      alert('Failed to add user.');
+      alert('Impossible ajouter un utilisateur.');
     }
+  };
+
+  const confirmSubmission = (event) => {
+    event.preventDefault();
+    confirmAlert({
+      title: 'Confirmation de soumission',
+      message: 'Êtes-vous sûr de vouloir ajouter cet utilisateur ?',
+      buttons: [
+        {
+          label: 'Oui',
+          onClick: handleSubmit
+        },
+        {
+          label: 'Non',
+          onClick: () => console.log('Ajout annulé')
+        }
+      ]
+    });
   };
 
   return (
@@ -108,9 +126,11 @@ function Add() {
                 </div>
                 <div className="col-md-6">
                   <label className="labels">Profil</label>
-                  <select id="objet" name="objet"  required onChange={e => setProfil(e.target.value)}>
+                  <select id="objet" name="objet" required onChange={e => setProfil(e.target.value)}>
                     <option value="fournisseur">fournisseur</option>
                     <option value="agent BOF">agent BOF</option>
+                    <option value="responsable finance">responsable finance</option>
+                    <option value="admin">admin</option>
                   </select>
                 </div>
               </div>
@@ -128,9 +148,8 @@ function Add() {
                 <label className="labels">Retapez le nouveau mot de passe</label>
                 <input type="password" className="form-control" placeholder="Retapez le nouveau mot de passe" onChange={handleConfirmPasswordChange} />
                 {!passwordMatch && <p className="password-error">Les mots de passe ne correspondent pas.</p>}
-                
               </div>
-              <button className="btn btn-primary profile-button" type="button" onClick={handleSubmit}>Enregistrer</button>
+              <button className="btn btn-primary profile-button" type="button" onClick={confirmSubmission}>Enregistrer</button>
             </div>
           </div>
         </div>

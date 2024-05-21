@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import "../form_facture/Form.css";
-import NavbarF from '../navbar/NavbarF.js';
+import NavbarF from '../navbar/Navbar_admin.js';
+import { confirmAlert } from 'react-confirm-alert'; // Import for confirmation dialog
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css for dialog
 
 function Form() {
   const [formData, setFormData] = useState({
-    dossier: '',
+    dossier: 'Direction Centrale de finance (DCF)',
     fournisseur: '',
     periode_conso: '',
     num_fact: '',
@@ -15,12 +17,10 @@ function Form() {
     num_po: '',
     date_receprion: '',
     montant: '',
-    objet: 'NOUVELLE_FACTURE', // Définir la valeur par défaut ici
-    statut: ''
+    objet: 'NOUVELLE_FACTURE',
+    statut: 'En cours'
   });
 
-
-  
   const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
@@ -28,33 +28,41 @@ function Form() {
     } else {
       setFormData({ ...formData, [name]: value });
     }
+  }; 
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    confirmAlert({
+      title: 'Confirmer la création',
+      message: 'Êtes-vous sûr de vouloir déposer cette facture ?',
+      buttons: [
+        {
+          label: 'Oui',
+          onClick: () => submitFacture()
+        },
+        {
+          label: 'Non',
+          onClick: () => {}
+        }
+      ]
+    });
   };
 
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(formData);  // Check the state before submitting
+  const submitFacture = async () => {
     const data = new FormData();
     Object.keys(formData).forEach(key => {
         data.append(key, formData[key]);
     });
 
-    console.log("Form data being sent:", Object.fromEntries(data)); // For debugging purposes
-
     try { 
-      const response = await axios.post('http://localhost:3000/api/facture', data);
-      alert('Facture created successfully!');
-      window.location.href = '/liste_facture';
-
-      console.log(response.data);
+      const response = await axios.post('http://localhost:3000/api/facture_res', data);
+      alert('Facture créée avec succès !'); 
+      window.location.href = '/Liste_facture_fournisseur';
     } catch (error) {
-      console.error('Error submitting form:', error.response ? error.response.data : error);
-      alert('Failed to create facture. Error: ' + (error.response ? error.response.data.message : error.message));
+      console.error('Erreur lors de l’envoi du formulaire :', error.response ? error.response.data : error);
+      alert('Impossible de créer la facture. Erreur: ' + (error.response ? error.response.data.message : error.message));
     } 
   };
-
-
-
 
   return (
     <div className="allF">
@@ -86,15 +94,13 @@ function Form() {
             </div>
             <div className="D_1">
               <label htmlFor="uploadDocument">Facture en PDF :</label>
-              <input type="file" id="pathpdf" name="pathpdf" accept=".pdf,.zip,.rar" required onChange={handleInputChange} />
+              <input type="file" id="pathpdf" name="pathpdf" accept=".pdf,.zip,.rar"  onChange={handleInputChange} />
 
               <label htmlFor="numeroPO">Numéro bon de commande :</label>
               <input type="text" id="num_po" name="num_po" placeholder="Numéro bon de commande" required onChange={handleInputChange} />
             </div>
             <div className="D_1">
-              <label htmlFor="idFiscale">ID Fiscal :</label>
-              <input type="text" id="statut" name="statut" placeholder="ID Fiscal" required onChange={handleInputChange} />
-
+            
               <label htmlFor="date_fact">Date facture:</label>
               <input type="date" id="date_fact" name="date_fact" required onChange={handleInputChange} />
 

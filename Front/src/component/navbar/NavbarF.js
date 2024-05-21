@@ -8,9 +8,9 @@ import '../navbar/Navbar.css';
 
 function Navbar() {
   const location = useLocation();
-  const isFacturePage = location.pathname === '/liste_facture';
+  const isFacturePage = location.pathname === '/liste_facture_fournisseur';
   const isDashPage = location.pathname === 'Dashboard';
-  const iscontactPage = location.pathname === '/contact';
+  const iscontactPage = location.pathname === '/ajouter_Réclamation';
 
 
   return (
@@ -25,12 +25,12 @@ function Navbar() {
           style={{ marginBottom:"30%",marginTop:"0%" }}
        />  
       <a href="/Dashboard" className={isDashPage ? "active" : ""}>Dashboard</a>
-      <a href="/liste_facture"  className={isFacturePage ? "active" : ""}> factures</a>
-      <a href="/contact"   className={iscontactPage ? "active" : ""} >réclamation </a>
+      <a href="/liste_facture_fournisseur"  className={isFacturePage ? "active" : ""}> factures</a>
+      <a href="/ajouter_Réclamation"   className={iscontactPage ? "active" : ""} >réclamation </a>
       <div className="dropdown" style={{ position: "fixed", bottom: 0 }}>
-         <CiSettings />
+      <CiSettings className='ss' style={{ fontSize: '30px' , marginBottom: '10%' }}/>
          <div className="dropdown-content"> 
-           <a href="/changepassAg">compte</a>
+           <a href="/information_personnel">compte</a>
            <a href="/">déconnexion</a>
          </div>
       </div> 

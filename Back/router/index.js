@@ -2,10 +2,10 @@
   const router = express.Router();
   const multer = require('multer');
   const { loginUser, changeUserPassword, createUserAccount ,getAllUserss,postFactures,getAllFacturesController  ,   postReclamationController,
-    getAllReclamationsController,updateUserAccount,getuserById,updateFactureController,
+    getAllReclamationsController,updateUserAccount,getuserById,updateFactureController,getFacturesByUserIdController,
     getReclamationByIdController ,getFactureController,archiveFactureController,
-    deleteUserAccount ,deleteFactureAccount,deleteArchiveAccount, postArchives,getAllArchivesController,getArchiveController,deleteReclamationAccount
-  } = require('../controller/index.js');
+    deleteUserAccount ,deleteFactureAccount,deleteArchiveAccount,postFacturesP, postArchives,getAllArchivesController,getArchiveController,deleteReclamationAccount
+  ,getAllFacturesControllerP, acceptFactureController , deleteFacturePAccount , getFactureNController} = require('../controller/index.js');
 
   const jwt = require('jsonwebtoken');
 
@@ -45,28 +45,39 @@ const fileFilter = function (req, file, cb) {
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
   //users  
-  router.post('/login', loginUser);
+  router.post('/login', loginUser); 
   router.post('/admin', createUserAccount);  
   router.get('/users', getAllUserss);
   router.delete('/user/:id', authenticateToken, deleteUserAccount); 
   router.put('/user/:id', authenticateToken, updateUserAccount);
   router.get('/user/:id', authenticateToken, getuserById);
-
-    
+  router.get('/factures/user/:user_id', authenticateToken, getFacturesByUserIdController);
+ 
+     
   // //password
   router.post('/change-password', authenticateToken, changeUserPassword);
  
-  
-  //facture
+     
+  //facture   
   router.post('/facture', upload.any(), postFactures);
   router.get('/factures', getAllFacturesController ); 
   router.delete('/del_fact/:id', authenticateToken, deleteFactureAccount);
   router.get('/fact/:id', getFactureController);
   router.put('/editfact/:id', authenticateToken, updateFactureController);
-  
+  router.get('/factName/:name', getFactureNController);
 
 
+   
+ 
+//presfacture
+router.post('/facture_res', upload.any(), postFacturesP);
+router.get('/factures_res', getAllFacturesControllerP );
+router.post('/facture/accept/:id', upload.any(), authenticateToken, acceptFactureController);
+router.delete('/del_fact_res/:id', authenticateToken, deleteFacturePAccount);
 
+ 
+ 
+ 
   // Route  reclamation
   router.post('/reclamation', authenticateToken, postReclamationController);
   router.get('/reclamations', authenticateToken, getAllReclamationsController);
@@ -82,7 +93,7 @@ const upload = multer({ storage: storage, fileFilter: fileFilter });
     router.delete('/del_arch/:id', authenticateToken, deleteArchiveAccount);
     router.post('/facture/archive/:id', upload.any(), authenticateToken, archiveFactureController);
 
-  
+   
  
 module.exports = router;    
   

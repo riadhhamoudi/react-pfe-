@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import NavbarF from '../navbar/Navbar_Ag';
+import NavbarF from '../navbar/Navbar_res';
 import "./EditFact.css";
 import { confirmAlert } from 'react-confirm-alert'; // Import for confirmation dialog
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css for dialog
@@ -38,6 +38,7 @@ function EditFact() {
         fetchFacture();
     }, [id]);
 
+    // Update facture
     const updateFacture = async () => {
         const token = localStorage.getItem('token');
         try {
@@ -48,7 +49,7 @@ function EditFact() {
             });
             console.log('Facture mise à jour avec succès :', response.data);
             alert('Facture mise à jour avec succès.');
-            window.location.href = '/liste_facture_Agent';
+            window.location.href = '/Listes_factures_responsable';
         } catch (error) {
             console.error('Échec de la mise à jour de la facture :', error);
             alert('Échec de la mise à jour de la facture.');
@@ -82,8 +83,7 @@ function EditFact() {
             [name]: value
         }));
     };
-
-   return (
+    return (
         <div className="allF1">
             <NavbarF />
             <div className="edit-facture-form">

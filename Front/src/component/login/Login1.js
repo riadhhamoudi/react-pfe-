@@ -52,12 +52,14 @@ function Login() {
       localStorage.setItem('user_id', response.data.user_id);
 
       if (profil === 'fournisseur') {
-        navigate("/formulaire");
+        navigate("/liste_facture");
       } else if (profil === 'agent BOF') {
         navigate("/liste_factureAG");
       } else if (profil === 'admin') {
-        navigate("/Form_admin");
-      } else { 
+        navigate("/Fact_Admin");
+      } else if (profil === 'responsable finance') {
+        navigate("/Fact_res"); 
+      } else {  
         setErrorMessage('Profil invalide');
       }
     } catch (error) {
@@ -94,13 +96,16 @@ function Login() {
         <div className='toggle-container'>
           <div className='toggle'>
             <div className="toggle-panel toggle-left">
-              <h1>Réinitialisez votre mot de passe!</h1>
-              <p>Entrez votre adresse email pour réinitialiser votre mot de passe</p>
+              <h1 >Réinitialisez </h1>
+              <h1>votre mot de passe!</h1>
+              <p>Entrez votre adresse email pour </p>
+              <p>réinitialiser votre mot de passe</p>
               <button className="hidden" onClick={handleToggle} id="login">Connexion</button>
             </div>
             <div className="toggle-panel toggle-right">
               <h1>Bienvenue!</h1>
-              <p>Si vous avez oublié votre mot de passe, cliquez sur ce bouton</p>
+              <p>Si vous avez oublié votre mot de passe, </p>
+              <p>cliquez sur ce bouton</p>
               <button className="hidden" onClick={handleToggle} id="register">Mot de passe oublié</button>
             </div>
           </div>
@@ -111,3 +116,4 @@ function Login() {
 }
 
 export default Login;
+ 

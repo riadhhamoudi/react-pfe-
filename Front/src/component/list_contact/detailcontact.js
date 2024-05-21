@@ -28,8 +28,8 @@ const Detailcontact = ({ feedbacks }) => {
       setSelectedFeedbackId(id);
       setDetailedFeedback(response.data);
     } catch (err) {
-      console.error('Error fetching detail:', err);
-      setError('Failed to load details');
+      console.error('Erreur lors de la récupération des détails :', err);
+      setError('Échec du chargement des détails');
       setSelectedFeedbackId(null);
       setDetailedFeedback(null);
     } finally {
@@ -51,8 +51,8 @@ const Detailcontact = ({ feedbacks }) => {
         setDetailedFeedback(null);  // Clear details view
         alert('Réclamation supprimée avec succès');
       } catch (err) {
-        console.error('Error deleting feedback:', err);
-        setError('Failed to delete feedback');
+        console.error('Erreur lors de la suppression des commentaires :', err);
+        setError('Impossible de supprimer les commentaires');
       } finally {
         setLoading(false);
       }
@@ -74,7 +74,7 @@ const Detailcontact = ({ feedbacks }) => {
                 <MdOutlineMoreHoriz />
               </button>
               <button onClick={() => handleContact(feedback.email)} className="contact-button">
-                <MdEmail />
+                <MdEmail /> 
               </button>
               <button onClick={() => handleDelete(feedback.id)} className="contact-button">
                 <MdDeleteForever />

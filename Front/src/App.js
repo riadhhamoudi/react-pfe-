@@ -23,7 +23,7 @@ import Listcontact from './component/list_contact/List_contact_Ag.js';
 import ChangepassAg from './component/change_pass/ChangepassAg.js';
 import EditFact_Ag from './component/edit_fact/EditFact_AG.js';
 import Edituser_Ag from './component/edit_user/Edituser_Ag.js';
-
+import Archive from './component/archive/Archive.js'
 
 
 //admin interfaces
@@ -36,7 +36,22 @@ import Formadmin from './component/form_facture/Form_admin.js';
 import Changepassadmin from './component/change_pass/Change_pass_admin.js';
 import EditUser from './component/edit_user/Editoneuser.js'
 import EditFact_admin from './component/edit_fact/EditFact_admin.js'
-import Archive from './component/archive/Archive.js'
+import Dash_admin from './component/dash_fournisseur/dash_admin.js';
+import Archive_admin from './component/archive/Archive_admin.js'
+
+
+//responsable interfaces
+import Trait from './component/trait_facture/Trait.js';
+import Fact_res from './component/list_fact_fournisseur/Fact_res.js';
+import Form_res from './component/form_facture/Form_res.js';
+import EditFact_res from './component/edit_fact/EditFact_res.js';
+import Listcontact_res from './component/list_contact/List_contact_res.js';
+import Archive_res from './component/archive/Archive_res.js'
+import Change_pass_res from './component/change_pass/Change_pass_res.js'
+import Dash_responsable from './component/dash_fournisseur/Dash_res.js';
+
+
+
 
 function App() {  
  return (  
@@ -44,33 +59,57 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login1 />} />
-        <Route path="/formulaire" element={<Form />} /> 
-        <Route path="/Form_admin" element={<Formadmin />} /> 
-        <Route path="/formulaireAg" element={<FormAg />} /> 
-        <Route path="/liste_facture" element={<Factfournisseur />} />
-        <Route path="/liste_factureAG" element={<FactfournisseurAg />} />
+
+        <Route path="/formulaire_fournisseur" element={<Form />} /> 
+        <Route path="/formulaire_admin" element={<Formadmin />} /> 
+        <Route path="/formulaire_agent" element={<FormAg />} /> 
+        <Route path="/Formulaire_responsable" element={<Form_res/>} />
+       
+
+
+        <Route path="/liste_facture_fournisseur" element={<Factfournisseur />} />
+        <Route path="/liste_facture_Agent" element={<FactfournisseurAg />} />
+        <Route path="/Listes_factures_responsable" element={<Fact_res/>} />
+        <Route path="/Listes_factures_admin" element={<FactAdmin />} />
+     
+
+        <Route path="/Listes_Utilisateurs_agent" element={<User />} />
+        <Route path="/Listes_Utilisateurs_admin" element={<Useradmin />} /> 
+
+        <Route path="/ajouter_utlilisateur_agent" element={<Adduser />} />
+        <Route path="/ajouter_utlilisateur_admin" element={<Adduseradmin />} />
+        
+        <Route path="/modifier_utilisateur_admin/:id" element={<EditUser />} />
+        <Route path="/modifier_utilisateur_agent/:id" element={<Edituser_Ag/>} />
+
+         
+        <Route path="/traitement_facture" element={<Trait/>} />
+
+
+        <Route path="/ajouter_Réclamation" element={<Contact />} />
+        <Route path="/listes_Réclamtion_responsable" element={<Listcontact_res/>} />
+        <Route path="/listes_Réclamtion_admin" element={<Listcontactadmin />} /> 
+        <Route path="/listes_Réclamtion" element={<Listcontact />} />
+
+
+        <Route path="/information_personnel_responsable" element={<Change_pass_res/>} />
+        <Route path="/information_personnel" element={<Changepass />} />
+        <Route path="/information_personnel_agent" element={<ChangepassAg />} />
+        <Route path="/information_personnel_admin" element={<Changepassadmin />} />
+
+        <Route path="/Archive_admin" element={<Archive_admin/>} />
+        <Route path="/Archive_agent" element={<Archive/>} />
+        <Route path="/Archive_responsable" element={<Archive_res/>} />
+
+        <Route path="/modifier_facture_admin/:id" element={<EditFact_admin />} />
+        <Route path="/modifier_facture_agent/:id" element={<EditFact_Ag />} />
+        <Route path="/modifier_facture_responsable/:id" element={<EditFact_res/>} />
+        <Route path="/modifier_facture_fournisseur/:id" element={<EditFact_F />} />
+
+        <Route path="/Dashboard_responsable" element={<Dash_responsable />} />
+        <Route path="/Dashboard_admin" element={<Dash_admin />} />
         <Route path="/Dashboard" element={<Dash />} />
         <Route path="/DashboardAg" element={<Dash2 />} />
-        <Route path="/changepass" element={<Changepass />} />
-        <Route path="/changepassAg" element={<ChangepassAg />} />
-        <Route path="/Changepass_admin" element={<Changepassadmin />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/List_contact" element={<Listcontact />} />
-        <Route path="/Fact_Admin" element={<FactAdmin />} />
-        <Route path="/user" element={<User />} />
-        <Route path="/User_admin" element={<Useradmin />} /> 
-        <Route path="/Adduser" element={<Adduser />} />
-        <Route path="/Fact_admin" element={<Factadmin />} /> 
-        <Route path="/Add_user_admin" element={<Adduseradmin />} />
-        <Route path="/Listcontact_admin" element={<Listcontactadmin />} /> 
-        <Route path="/edituser/:id" element={<EditUser />} />
-        <Route path="/Edituser_Ag/:id" element={<Edituser_Ag/>} />
-        <Route path="/Archive" element={<Archive/>} />
-
-
-        <Route path="/editfact_admin/:id" element={<EditFact_admin />} />
-        <Route path="/editfact_Ag/:id" element={<EditFact_Ag />} />
-        <Route path="/editfact_F/:id" element={<EditFact_F />} />
       </Routes>
     </Router>
 

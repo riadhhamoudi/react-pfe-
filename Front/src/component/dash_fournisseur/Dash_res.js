@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import './Dash.css';
-import Navbar1 from '../navbar/Navbar_Ag';
+import Navbar1 from '../navbar/Navbar_res';
 
 
 function Dashboard() {

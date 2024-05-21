@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Navbar1 from '../navbar/Navbar_Ag';
 import './Edit.css';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 function Editoneuser() {
   const { id } = useParams();
@@ -12,7 +14,8 @@ function Editoneuser() {
     profil: '',
     telephone: '',
     secondary_name: '',
-    address: ''
+    address: '',
+    password:''
   });
 
   useEffect(() => {
@@ -26,8 +29,8 @@ function Editoneuser() {
       setUserData(response.data);
     })
     .catch(error => {
-      console.error('Error fetching user:', error);
-      alert('Error fetching user data');
+      console.error('Erreur lors de la récupération de l’utilisateur :', error);
+      alert('Erreur lors de la récupération des données utilisateur');
     });
   }, [id]);
 
@@ -35,22 +38,39 @@ function Editoneuser() {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     const token = localStorage.getItem('token');
 
-    e.preventDefault();
     axios.put(`http://localhost:3000/api/user/${id}`, userData, {
       headers: {
         Authorization: `Bearer ${token}` 
       }
     })
     .then(response => {
-      alert('User updated successfully');
-      window.location.href = '/User';
+      alert('Mise à jour réussie de l’utilisateur');
+      window.location.href = '/Listes_Utilisateurs_agent';
     })
     .catch(error => {
-      console.error('Failed to update user:', error);
-      alert('Failed to update user');
+      console.error('Échec de la mise à jour de l’utilisateur :', error);
+      alert('Échec de la mise à jour de l’utilisateur');
+    });
+  };
+
+  const confirmSubmission = (e) => {
+    e.preventDefault();
+    confirmAlert({
+      title: 'Confirmation de modification',
+      message: 'Êtes-vous sûr de vouloir modifier cet utilisateur ?',
+      buttons: [
+        {
+          label: 'Oui',
+          onClick: handleSubmit
+        },
+        {
+          label: 'Non',
+          onClick: () => console.log('Modification annulée')
+        }
+      ]
     });
   };
 
@@ -58,9 +78,9 @@ function Editoneuser() {
     <div className="container_edit1">
       <Navbar1 />
       
-      <h1 style={{ padding: "1%", marginLeft: "-40%" }}>modification d'utilisation</h1>
+      <h1 style={{ padding: "1%", marginLeft: "-40%" }}>modification information du fournisseur</h1>
       
-      <form className="form_edit1" onSubmit={handleSubmit} >
+      <form className="form_edit1" onSubmit={confirmSubmission} >
      
         <label htmlFor="name">Nom</label>
         <input type="text" id="name" name="name" value={userData.name} onChange={handleChange} className="input-field"  />
@@ -80,6 +100,11 @@ function Editoneuser() {
 
         <label htmlFor="address">Adresse</label>
         <input type="text" id="address" name="address" value={userData.address} onChange={handleChange}  className="input-field" />
+
+
+        <label htmlFor="password">mot de passe</label>
+        <input type="password" id="password" name="password" value={userData.password} onChange={handleChange}  className="input-field" />
+
 
         <button type="submit" className="button_edit1">enregistrer</button>
       

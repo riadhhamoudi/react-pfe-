@@ -72,6 +72,12 @@
   position: relative;
 }
 
+
+
+
+
+
+
 .statistic::before {
   content: '';
   position: absolute;

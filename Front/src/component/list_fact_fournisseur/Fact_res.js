@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { MdDeleteForever, MdAdd, MdFileDownload , MdArchive } from "react-icons/md";
+import { MdDeleteForever, MdAdd, MdFileDownload, MdArchive } from "react-icons/md";
 import { RiFileEditFill } from "react-icons/ri";
 import { AiOutlineSearch } from "react-icons/ai";
-
 import './Fact_fournisseur.css';
-import Navbar1 from '../navbar/Navbar_admin.js';
+import Navbar1 from '../navbar/Navbar_res.js';
 import { useNavigate } from 'react-router-dom';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
@@ -13,41 +12,37 @@ import ReactPaginate from 'react-paginate';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
-
-
-
 const Factfournisseur = () => {
   const [factures, setFactures] = useState([]);
   const [displayedFactures, setDisplayedFactures] = useState([]);
   const [search, setSearch] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage] = useState(8);
   const navigate = useNavigate();
 
-  useEffect(() => { 
+  useEffect(() => {
     fetchFactures();
   }, []);
 
   const fetchFactures = () => {
     axios.get('http://localhost:3000/api/factures')
       .then(response => {
-        const reversedData = response.data.reverse(); // Inverser le tableau de données ici
+        const reversedData = response.data.reverse();
         setFactures(reversedData);
         setDisplayedFactures(reversedData.slice(0, itemsPerPage));
       })
-      .catch(error => console.error('Erreur lors de la récupération des données :', error));
+      .catch(error => console.error('Error fetching data:', error));
   };
-  
+
   const handleAjoutClick = () => {
-    navigate('/formulaire_admin');
+    navigate('/Formulaire_responsable');
   };
 
   const handleSearchClick = () => {
     setIsInputVisible(true);
   };
-  
- 
+
   const handleInputChange = (event) => {
     const value = event.target.value.toLowerCase();
     setSearch(value);
@@ -55,7 +50,7 @@ const Factfournisseur = () => {
       facture.fournisseur.toLowerCase().includes(value)
     );
     setDisplayedFactures(filtered.slice(0, itemsPerPage));
-    setCurrentPage(1);
+    setCurrentPage(0);
   };
 
   const handleDelete = (id) => {
@@ -92,7 +87,7 @@ const Factfournisseur = () => {
   
 
   const handleEdit = (id) => {
-    navigate(`/modifier_facture_admin/${id}`);
+    navigate(`/modifier_facture_responsable/${id}`);
   };
 
   const handleDownloadPdf = (facture) => {
@@ -148,16 +143,6 @@ const Factfournisseur = () => {
     doc.save(`Facture_${facture.id}.pdf`);
   };
 
-  const handlePageClick = (data) => {
-    const selectedPage = data.selected;
-    setCurrentPage(selectedPage);
-    const indexOfFirstItem = selectedPage * itemsPerPage;
-    const displayed = factures.slice(indexOfFirstItem, indexOfFirstItem + itemsPerPage);
-    setDisplayedFactures(displayed);
-  };
- 
-
-
   const handleArchive = (id) => {
     const token = localStorage.getItem('token');
     axios.post(`http://localhost:3000/api/facture/archive/${id}`, {}, {
@@ -171,6 +156,14 @@ const Factfournisseur = () => {
       console.error('Erreur d’archivage de la facture :', error);
       alert('Échec de l’archivage de la facture');
     });
+  };
+
+  const handlePageClick = (data) => {
+    const selectedPage = data.selected;
+    setCurrentPage(selectedPage);
+    const indexOfFirstItem = selectedPage * itemsPerPage;
+    const displayed = factures.slice(indexOfFirstItem, indexOfFirstItem + itemsPerPage);
+    setDisplayedFactures(displayed);
   };
 
   // Function to determine the color based on the status
@@ -211,10 +204,10 @@ const Factfournisseur = () => {
               <tr>
                 <th>Référence</th>
                 <th>Fournisseur</th>
-                <th>direction</th>
-                <th>Numéro de facture</th>
-                <th>Date de facture</th>
-                <th>PDF de facture</th>
+                <th>Direction</th>
+                <th>Numéro de Facture</th>
+                <th>Date de Facture</th>
+                <th>PathPDF</th>
                 <th>Devise</th>
                 <th>Montant</th>
                 <th>Objet</th>
@@ -241,14 +234,12 @@ const Factfournisseur = () => {
                       <MdDeleteForever onClick={() => handleDelete(facture.id)} className='icon_style' />
                       <RiFileEditFill onClick={() => handleEdit(facture.id)} className='icon_style' />
                       <MdArchive onClick={() => handleArchive(facture.id)} className='icon_style' />
-
                     </div>
                   </td>
-                </tr> 
+                </tr>
               ))}
             </tbody>
           </table>
-          <div className="pagination">
           <ReactPaginate
             previousLabel={'Précédent'}
             nextLabel={'Suivant'}
@@ -258,7 +249,6 @@ const Factfournisseur = () => {
             containerClassName={'pagination'}
             activeClassName={'active'}
           />
-          </div>
         </div>
       </div>
     </div>

@@ -97,6 +97,26 @@ tr:hover {
 }
 
 
+.two_icons {
+  display: flex;
+  gap: 10px; /* Space between icons */
+}
+
+.icon_style {
+  font-size: 24px; /* Adjust icon size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: transform 0.2s, color 0.2s; /* Smooth transition for hover effects */
+
+}
+
+.icon_style:hover {
+  transform: scale(1.1); /* Slightly increase size on hover */
+  color: #007BFF; /* Change color on hover, adjust as needed */
+}
+
+.icon_style:active {
+  transform: scale(0.9); /* Slightly decrease size when active/clicked */
+}
 
 
 

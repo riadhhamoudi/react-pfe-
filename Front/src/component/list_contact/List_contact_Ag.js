@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Detailcontact from './detailcontact.js';
 import NavbarAg from '../navbar/Navbar_Ag.js';
+import ReactPaginate from 'react-paginate';
 
 const AdminDashboard = () => {
   const [reclamations, setReclamations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
@@ -21,7 +22,7 @@ const AdminDashboard = () => {
         setReclamations(response.data);
       } catch (err) {
         setError(err.message);
-        console.error('Error fetching reclamations:', err);
+        console.error('Erreur lors de la récupération des récupérations :', err);
       } finally {
         setIsLoading(false);
       }
@@ -35,26 +36,15 @@ const AdminDashboard = () => {
     pageNumbers.push(i);
   }
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = reclamations.slice(indexOfFirstItem, indexOfLastItem);
+ // Calculer les réclamations à afficher
+ const indexOfLastItem = (currentPage + 1) * itemsPerPage;
+ const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+ const currentItems = reclamations.slice(indexOfFirstItem, indexOfLastItem);
 
-  const handleClick = (event) => {
-    setCurrentPage(Number(event.target.id));
-  };
+ const handlePageClick = (data) => {
+   setCurrentPage(data.selected);
+ };
 
-  const renderPageNumbers = pageNumbers.map(number => {
-    return (
-      <button 
-        key={number} 
-        id={number}
-        onClick={handleClick}
-        className={currentPage === number ? 'active' : ''}
-      >
-        {number}
-      </button>
-    );
-  });
 
   return (
     <div>
@@ -68,7 +58,18 @@ const AdminDashboard = () => {
         <>
           <Detailcontact feedbacks={currentItems} />
           <div className="pagination">
-            {renderPageNumbers}
+          <ReactPaginate
+            previousLabel={'Précédent'}
+            nextLabel={'Suivant'}
+            breakLabel={'...'}
+            pageCount={Math.ceil(reclamations.length / itemsPerPage)}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName={'pagination'}
+            activeClassName={'active'}
+            forcePage={currentPage}
+          />
           </div>
         </>
       )}

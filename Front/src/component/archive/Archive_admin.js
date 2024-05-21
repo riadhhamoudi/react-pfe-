@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { MdDeleteForever, MdAdd, MdFileDownload , MdArchive } from "react-icons/md";
-import { RiFileEditFill } from "react-icons/ri";
+import { MdDeleteForever, MdFileDownload } from "react-icons/md";
 import { AiOutlineSearch } from "react-icons/ai";
-
-import './Fact_fournisseur.css';
+import './Archive.css';
 import Navbar1 from '../navbar/Navbar_admin.js';
 import { useNavigate } from 'react-router-dom';
 import { jsPDF } from "jspdf";
@@ -12,9 +10,6 @@ import 'jspdf-autotable';
 import ReactPaginate from 'react-paginate';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-
-
-
 
 const Factfournisseur = () => {
   const [factures, setFactures] = useState([]);
@@ -30,24 +25,22 @@ const Factfournisseur = () => {
   }, []);
 
   const fetchFactures = () => {
-    axios.get('http://localhost:3000/api/factures')
+    axios.get('http://localhost:3000/api/archives')
       .then(response => {
         const reversedData = response.data.reverse(); // Inverser le tableau de données ici
         setFactures(reversedData);
         setDisplayedFactures(reversedData.slice(0, itemsPerPage));
       })
-      .catch(error => console.error('Erreur lors de la récupération des données :', error));
-  };
+      .catch(error => console.error('Erreur lors de la récupération des données:', error));
+  }; 
   
-  const handleAjoutClick = () => {
-    navigate('/formulaire_admin');
-  };
+
+
 
   const handleSearchClick = () => {
-    setIsInputVisible(true);
+    setIsInputVisible(!isInputVisible);
   };
-  
- 
+
   const handleInputChange = (event) => {
     const value = event.target.value.toLowerCase();
     setSearch(value);
@@ -77,74 +70,40 @@ const Factfournisseur = () => {
   
   const deleteFacture = (id) => {
     const token = localStorage.getItem('token');
-    axios.delete(`http://localhost:3000/api/del_fact/${id}`, {
+    axios.delete(`http://localhost:3000/api/del_arch/${id}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(() => {
       alert('Facture supprimée avec succès');
-      fetchFactures();
+      fetchFactures(); // Recharger les factures après la suppression
     })
     .catch(error => {
-      console.error('Erreur lors de la suppression de la facture :', error);
+      console.error('Erreur lors de la suppression de la facture:', error);
       alert('Échec de la suppression de la facture');
     });
   };
   
 
-  const handleEdit = (id) => {
-    navigate(`/modifier_facture_admin/${id}`);
-  };
 
   const handleDownloadPdf = (facture) => {
     const doc = new jsPDF();
-  
-    
-  
-  
-    // Titre de la facture
-    doc.setFontSize(12);
-    doc.text('Tunisie Telecom', 14, 22);
-    doc.text('Direction centrale des finances,Montplaisir', 14, 27);
-
-  
-    // Informations du client
-    doc.text(`Facturé à:`, 120, 22);
-    doc.text(`${facture.fournisseur}`, 120, 27);
-    doc.text('tunis', 120, 37);
-    doc.text('+216 71 856 459', 120, 42);
-  
-    // Détails de la facture
-    doc.setFontSize(10);
-    doc.text(`Date d’émission: ${facture.date_fact}`, 14, 50);
-    doc.text(`numéro facture: ${facture.num_fact}`, 14, 55);
-    doc.text(`montant: ${facture.montant} TND`, 14, 60);
-  
-    // Table des articles
+    doc.text(`Facture ID: ${facture.id}`, 14, 15);
     doc.autoTable({
-      startY: 65,
+      startY: 25,
       theme: 'grid',
-      head: [['Référence', 'Fournisseur', 'Direction', 'Numéro de facture', 'Date de Facture', 'Montant', 'Objet', 'Statut']],
-      body: [
-        [
-          facture.id,
-          facture.fournisseur,
-          facture.dossier,
-          facture.num_fact,
-          facture.date_fact,
-          `${facture.montant} TND`,
-          facture.objet,
-          facture.statut
-        ],
-      ],
+      head: [['ID', 'Fournisseur', 'Dossier', 'Numéro de Facture', 'Date de Facture', 'Appareil', 'Montant', 'Objet', 'Statut']],
+      body: [[
+        facture.id,
+        facture.fournisseur,
+        facture.dossier,
+        facture.num_fact,
+        facture.date_fact,
+        facture.device,
+        `${facture.montant} TND`,
+        facture.objet,
+        facture.statut
+      ]],
     });
-  
-    // Notes
-    doc.setFontSize(10);
-    doc.text('Notes', 14, doc.lastAutoTable.finalY + 10);
-    doc.text('Merci pour votre confiance!', 14, doc.lastAutoTable.finalY + 15);
-  
-
-    // Sauvegarder le PDF
     doc.save(`Facture_${facture.id}.pdf`);
   };
 
@@ -155,43 +114,17 @@ const Factfournisseur = () => {
     const displayed = factures.slice(indexOfFirstItem, indexOfFirstItem + itemsPerPage);
     setDisplayedFactures(displayed);
   };
- 
 
 
-  const handleArchive = (id) => {
-    const token = localStorage.getItem('token');
-    axios.post(`http://localhost:3000/api/facture/archive/${id}`, {}, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then(() => {
-      alert('Facture archivée avec succès');
-      fetchFactures(); // Refresh factures after archiving
-    })
-    .catch(error => {
-      console.error('Erreur d’archivage de la facture :', error);
-      alert('Échec de l’archivage de la facture');
-    });
-  };
-
-  // Function to determine the color based on the status
-  const getStatusColor = (statut) => {
-    if (statut === 'En cours') return 'green'; 
-    else if (statut === 'Impayée') return 'red';
-    else if (statut === 'A payé') return 'pink';
-    else if (statut === 'Payée') return 'blue';
-   
-  };
-
+  
   return (
     <div>
       <Navbar1 />
       <div className="all1">
         <div className='tab'>
-          <h1 style={{ padding: "1%", marginLeft: "10%" }}>Liste des Factures</h1>
+          <h1 style={{ padding: "1%", marginLeft: "10%" }}>Archive</h1>
           <div className='barre'>
-            <div className='add_inv' onClick={handleAjoutClick}>
-              <MdAdd /> Ajouter une facture
-            </div>
+ 
             <div className='add_inv' onClick={handleSearchClick}>
               <AiOutlineSearch />
               <label>Rechercher une facture</label>
@@ -211,11 +144,10 @@ const Factfournisseur = () => {
               <tr>
                 <th>Référence</th>
                 <th>Fournisseur</th>
-                <th>direction</th>
-                <th>Numéro de facture</th>
-                <th>Date de facture</th>
-                <th>PDF de facture</th>
-                <th>Devise</th>
+                <th>Dossier</th>
+                <th>Numéro de Facture</th>
+                <th>Date de Facture</th>
+                <th>Appareil</th>
                 <th>Montant</th>
                 <th>Objet</th>
                 <th>Statut</th>
@@ -230,21 +162,19 @@ const Factfournisseur = () => {
                   <td>{facture.dossier}</td>
                   <td>{facture.num_fact}</td>
                   <td>{facture.date_fact}</td>
-                  <td>{facture.pathpdf}</td>
                   <td>{facture.device}</td>
                   <td>{facture.montant}</td>
                   <td>{facture.objet}</td>
-                  <td style={{ color: getStatusColor(facture.statut) }}>{facture.statut}</td>
+                  <td>{facture.statut}</td>
                   <td>
                     <div className='two_icons'>
                       <MdFileDownload onClick={() => handleDownloadPdf(facture)} className='icon_style' />
                       <MdDeleteForever onClick={() => handleDelete(facture.id)} className='icon_style' />
-                      <RiFileEditFill onClick={() => handleEdit(facture.id)} className='icon_style' />
-                      <MdArchive onClick={() => handleArchive(facture.id)} className='icon_style' />
+            
 
                     </div>
                   </td>
-                </tr> 
+                </tr>
               ))}
             </tbody>
           </table>

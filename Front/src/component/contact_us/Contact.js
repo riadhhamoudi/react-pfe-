@@ -13,10 +13,10 @@ const Form = () => {
     
     const userId = localStorage.getItem('user_id');  // Retrieve the user ID from local storage
     const token = localStorage.getItem('token');     // Retrieve the token from local storage
-    console.log('User ID from localStorage:', userId);
+    console.log('ID utilisateur de localStorage :', userId);
 
     if (!userId || !token) {
-      console.error('Authentication details not found');
+      console.error('Détails d’authentification introuvables');
       return; // Early return if user ID or token is not found
     }
   
@@ -29,45 +29,50 @@ const Form = () => {
       }, {
         headers: {
           'Authorization': `Bearer ${token}`
-        }
+        } 
       });
-      console.log('Reclamation created:', response.data);
-      // Optionally reset form or give user feedback
+      console.log('Récupération créée :', response.data);
+      alert(response.data.message);
     } catch (error) {
-      console.error('Failed to create reclamation:', error.response.data);
+      console.error('Échec de la création de la récupération :', error.response.data);
     }
   }
   
-  return (
+  return ( 
     <div>
       <Navbar1/>
       <div className="contact-form">
-        <h2>Contact Us</h2>
+        <h2>déposer une réclamation</h2>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="title">Title:</label><br />
+          <label htmlFor="title">sujet:</label><br />
           <input
             type="text"
             id="title"
             name="title"
-            placeholder="Enter your title"
+            placeholder="Entrez votre titre"
             value={title}
+            required
+
             onChange={(e) => setTitle(e.target.value)}
           /><br />
-          <label htmlFor="email">Email:</label><br />
+          <label htmlFor="email">Addresse Email:</label><br />
           <input
             type="email"
             id="email"
             name="email"
-            placeholder="Enter your email"
+            placeholder="Entrez votre adresse e-mail"
             value={email}
+            required
             onChange={(e) => setEmail(e.target.value)}
           /><br />
-          <label htmlFor="description">Message:</label><br />
+          <label htmlFor="description">description:</label><br />
           <textarea
             id="description"
             name="description"
-            placeholder="Enter your message"
+            placeholder="Entrez votre message"
             value={description}
+            required
+
             onChange={(e) => setDescription(e.target.value)}
           /><br />
 

@@ -8,6 +8,10 @@ import Navbar1 from '../navbar/Navbar_Ag.js';
 import { useNavigate } from 'react-router-dom';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
+import ReactPaginate from 'react-paginate';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 
 const Factfournisseur = () => {
   const [factures, setFactures] = useState([]);
@@ -33,7 +37,7 @@ const Factfournisseur = () => {
   };
 
   const handleAjoutClick = () => {
-    navigate('/formulaireAg');
+    navigate('/formulaire_agent');
   };
 
   const handleSearchClick = () => {
@@ -52,33 +56,71 @@ const Factfournisseur = () => {
   };
 
   const handleDelete = (id) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette facture ?")) {
-      const token = localStorage.getItem('token');
-      axios.delete(`http://localhost:3000/api/del_fact/${id}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      .then(() => {
-        alert('Facture supprimée avec succès');
-        fetchFactures(); // Refresh factures after deletion
-      })
-      .catch(error => {
-        console.error('Error deleting facture:', error);
-        alert('Failed to delete facture');
-      });
-    }
+    confirmAlert({
+      title: 'Confirmation de suppression',
+      message: 'Êtes-vous sûr de vouloir supprimer cette facture ?',
+      buttons: [
+        {
+          label: 'Oui',
+          onClick: () => deleteFacture(id)
+        },
+        {
+          label: 'Non',
+          onClick: () => {}
+        }
+      ]
+    });
   };
+  
+  const deleteFacture = (id) => {
+    const token = localStorage.getItem('token');
+    axios.delete(`http://localhost:3000/api/del_fact/${id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(() => {
+      alert('Facture supprimée avec succès');
+      fetchFactures();
+    })
+    .catch(error => {
+      console.error('Erreur lors de la suppression de la facture :', error);
+      alert('Échec de la suppression de la facture');
+    });
+  };
+  
 
   const handleEdit = (id) => {
-    navigate(`/editfact_Ag/${id}`);
+    navigate(`/modifier_facture_agent/${id}`);
   };
 
   const handleDownloadPdf = (facture) => {
     const doc = new jsPDF();
-    doc.text(`Facture ID: ${facture.id}`, 14, 15);
+  
+    
+  
+  
+    // Titre de la facture
+    doc.setFontSize(12);
+    doc.text('Tunisie Telecom', 14, 22);
+    doc.text('Direction centrale des finances,Montplaisir', 14, 27);
+
+  
+    // Informations du client
+    doc.text(`Facturé à:`, 120, 22);
+    doc.text(`${facture.fournisseur}`, 120, 27);
+    doc.text('tunis', 120, 37);
+    doc.text('+216 71 856 459', 120, 42);
+  
+    // Détails de la facture
+    doc.setFontSize(10);
+    doc.text(`Date d’émission: ${facture.date_fact}`, 14, 50);
+    doc.text(`numéro facture: ${facture.num_fact}`, 14, 55);
+    doc.text(`montant: ${facture.montant} TND`, 14, 60);
+  
+    // Table des articles
     doc.autoTable({
-      startY: 25,
+      startY: 65,
       theme: 'grid',
-      head: [['Référence', 'Fournisseur	', 'direction', 'Numéro de facture', 'Date de Facture','pathPDF', 'Montant', 'Objet', 'Statut']],
+      head: [['Référence', 'Fournisseur', 'Direction', 'Numéro de facture', 'Date de Facture', 'Montant', 'Objet', 'Statut']],
       body: [
         [
           facture.id,
@@ -86,15 +128,23 @@ const Factfournisseur = () => {
           facture.dossier,
           facture.num_fact,
           facture.date_fact,
-          facture.device,
           `${facture.montant} TND`,
           facture.objet,
           facture.statut
         ],
       ],
     });
+  
+    // Notes
+    doc.setFontSize(10);
+    doc.text('Notes', 14, doc.lastAutoTable.finalY + 10);
+    doc.text('Merci pour votre confiance!', 14, doc.lastAutoTable.finalY + 15);
+  
+
+    // Sauvegarder le PDF
     doc.save(`Facture_${facture.id}.pdf`);
   };
+
 
   const handleArchive = (id) => {
     const token = localStorage.getItem('token');
@@ -102,27 +152,30 @@ const Factfournisseur = () => {
       headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(() => {
-      alert('Facture archived successfully');
+      alert('Facture archivée avec succès');
       fetchFactures(); // Refresh factures after archiving
     })
     .catch(error => {
-      console.error('Error archiving facture:', error);
-      alert('Failed to archive facture');
+      console.error('Erreur d’archivage de la facture :', error);
+      alert('Échec de l’archivage de la facture');
     });
   };
 
   // Function to determine the color based on the status
   const getStatusColor = (statut) => {
-    if (statut === 'en cours') return 'green';
-    else if (statut === 'réfusé') return 'red';
-    else return 'blue';
+    if (statut === 'En cours') return 'green'; 
+    else if (statut === 'Impayée') return 'red';
+    else if (statut === 'A payé') return 'pink';
+    else if (statut === 'Payée') return 'blue';
+   
   };
 
-  const handlePageClick = (number) => {
-    setCurrentPage(number);
-    const indexOfLastItem = number * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    setDisplayedFactures(factures.slice(indexOfFirstItem, indexOfLastItem));
+  const handlePageClick = (data) => {
+    const selectedPage = data.selected;
+    setCurrentPage(selectedPage);
+    const indexOfFirstItem = selectedPage * itemsPerPage;
+    const displayed = factures.slice(indexOfFirstItem, indexOfFirstItem + itemsPerPage);
+    setDisplayedFactures(displayed);
   };
 
   return (
@@ -192,16 +245,15 @@ const Factfournisseur = () => {
             </tbody>
           </table>
           <div className="pagination">
-            {Array.from({ length: Math.ceil(factures.length / itemsPerPage) }, (_, i) => i + 1)
-              .map(number => (
-                <button
-                  key={number}
-                  onClick={() => handlePageClick(number)}
-                  style={{ margin: 5, cursor: 'pointer' }}
-                >
-                  {number}
-                </button>
-              ))}
+          <ReactPaginate
+            previousLabel={'Précédent'}
+            nextLabel={'Suivant'}
+            breakLabel={'...'}
+            pageCount={Math.ceil(factures.length / itemsPerPage)}
+            onPageChange={handlePageClick}
+            containerClassName={'pagination'}
+            activeClassName={'active'}
+          />
           </div>
         </div>
       </div>

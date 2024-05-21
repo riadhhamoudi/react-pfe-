@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { MdDeleteForever, MdAdd, MdFileDownload } from "react-icons/md";
-import { RiFileEditFill } from "react-icons/ri";
-import './Fact_fournisseur.css';
-import Navbar1 from '../navbar/NavbarF.js';
+import { FcAcceptDatabase } from "react-icons/fc";
 import { AiOutlineSearch } from "react-icons/ai";
+import './Trait.css';
+import Navbar1 from '../navbar/Navbar_res.js';
 import { useNavigate } from 'react-router-dom';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
-import {jwtDecode} from 'jwt-decode';
 import ReactPaginate from 'react-paginate';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
@@ -18,8 +17,8 @@ const Factfournisseur = () => {
   const [displayedFactures, setDisplayedFactures] = useState([]);
   const [search, setSearch] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(9);
+  const [currentPage, setCurrentPage] = useState(0); // Note: react-paginate uses zero index for initial page
+  const [itemsPerPage] = useState(8);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,15 +26,7 @@ const Factfournisseur = () => {
   }, []);
 
   const fetchFactures = () => {
-    const token = localStorage.getItem('token');
-    const decodedToken = jwtDecode(token);
-    const name = decodedToken.name;
-  
-    axios.get(`http://localhost:3000/api/factName/${name}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      } 
-    })
+    axios.get('http://localhost:3000/api/factures_res')
       .then(response => {
         const reversedData = response.data.reverse();
         setFactures(reversedData);
@@ -45,27 +36,57 @@ const Factfournisseur = () => {
   };
 
   const handleAjoutClick = () => {
-    navigate('/formulaire_fournisseur');
+    navigate('/Formulaire_responsable');
   };
 
   const handleSearchClick = () => {
     setIsInputVisible(true);
   };
-  
+
   const handleInputChange = (event) => {
     const value = event.target.value.toLowerCase();
     setSearch(value);
     const filtered = factures.filter(facture =>
       facture.fournisseur.toLowerCase().includes(value)
-    ).reverse();
+    );
     setDisplayedFactures(filtered.slice(0, itemsPerPage));
-    setCurrentPage(1);
+    setCurrentPage(0);
+  };
+
+  const handleDownloadPdf = (facture) => {
+    const doc = new jsPDF();
+    doc.text(`ID de la Facture : ${facture.id}`, 14, 15);
+    doc.autoTable({
+      startY: 20,
+      theme: 'grid',
+      head: [['Référence', 'Fournisseur', 'Direction', 'Numéro de Facture', 'Date de Facture', 'Chemin PDF', 'Montant', 'Objet', 'Statut']],
+      body: [[
+        facture.id,
+        facture.fournisseur,
+        facture.dossier,
+        facture.num_fact,
+        facture.date_fact,
+        facture.pathpdf,
+        `${facture.montant} TND`,
+        facture.objet,
+        facture.statut
+      ]],
+    });
+    doc.save(`Facture_${facture.id}.pdf`);
+  };
+
+  const handlePageClick = (event) => {
+    const newPage = event.selected;
+    setCurrentPage(newPage);
+    const indexOfLastItem = (newPage + 1) * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    setDisplayedFactures(factures.slice(indexOfFirstItem, indexOfLastItem));
   };
 
   const handleDelete = (id) => {
     confirmAlert({
-      title: 'Confirmation de suppression',
-      message: 'Êtes-vous sûr de vouloir supprimer cette facture ?',
+      title: 'Confirmation de refus du facture',
+      message: 'Êtes-vous sûr de vouloir refusée cette facture ?',
       buttons: [
         {
           label: 'Oui',
@@ -81,100 +102,51 @@ const Factfournisseur = () => {
   
   const deleteFacture = (id) => {
     const token = localStorage.getItem('token');
-    axios.delete(`http://localhost:3000/api/del_fact/${id}`, {
+    axios.delete(`http://localhost:3000/api/del_fact_res/${id}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(() => {
-      alert('Facture supprimée avec succès');
-      fetchFactures();
+      alert('Facture réfusée');
+      fetchFactures(); // Refresh the factures list after deletion
     })
     .catch(error => {
-      console.error('Erreur lors de la suppression de la facture :', error);
-      alert('Échec de la suppression de la facture');
+      console.error('Erreur lors de la refus du facture :', error);
+      alert('Échec de la refus de la facture');
     });
   };
   
-  const handleEdit = (id) => {
-    navigate(`/modifier_facture_fournisseur/${id}`);
-  };
 
-  const handleDownloadPdf = (facture) => {
-    const doc = new jsPDF();
-  
-    
-  
-  
-    // Titre de la facture
-    doc.setFontSize(12);
-    doc.text('Tunisie Telecom', 14, 22);
-    doc.text('Direction centrale des finances,Montplaisir', 14, 27);
-
-  
-    // Informations du client
-    doc.text(`Facturé à:`, 120, 22);
-    doc.text(`${facture.fournisseur}`, 120, 27);
-    doc.text('tunis', 120, 37);
-    doc.text('+216 71 856 459', 120, 42);
-  
-    // Détails de la facture
-    doc.setFontSize(10);
-    doc.text(`Date d’émission: ${facture.date_fact}`, 14, 50);
-    doc.text(`numéro facture: ${facture.num_fact}`, 14, 55);
-    doc.text(`montant: ${facture.montant} TND`, 14, 60);
-  
-    // Table des articles
-    doc.autoTable({
-      startY: 65,
-      theme: 'grid',
-      head: [['Référence', 'Fournisseur', 'Direction', 'Numéro de facture', 'Date de Facture', 'Montant', 'Objet', 'Statut']],
-      body: [
-        [
-          facture.id,
-          facture.fournisseur,
-          facture.dossier,
-          facture.num_fact,
-          facture.date_fact,
-          `${facture.montant} TND`,
-          facture.objet,
-          facture.statut
-        ],
-      ],
-    });
-  
-    // Notes
-    doc.setFontSize(10);
-    doc.text('Notes', 14, doc.lastAutoTable.finalY + 10);
-    doc.text('Merci pour votre confiance!', 14, doc.lastAutoTable.finalY + 15);
-  
-
-    // Sauvegarder le PDF
-    doc.save(`Facture_${facture.id}.pdf`);
+  const acceptFacture = (id) => {
+    if (window.confirm("Êtes-vous sûr de vouloir accepter cette facture ?")) {
+      const token = localStorage.getItem('token');
+      axios.post(`http://localhost:3000/api/facture/accept/${id}`, {}, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(() => {
+        alert('Facture acceptée avec succès');
+        fetchFactures(); // Rafraîchir les factures après acceptation
+      })
+      .catch(error => {
+        console.error('Échec de lacceptation de la facture :', error);
+        alert('Échec de lacceptation de la facture');
+      });
+    }
   };
-
-  const handlePageClick = (data) => {
-    const selectedPage = data.selected;
-    setCurrentPage(selectedPage);
-    const indexOfFirstItem = selectedPage * itemsPerPage;
-    const displayed = factures.slice(indexOfFirstItem, indexOfFirstItem + itemsPerPage);
-    setDisplayedFactures(displayed);
-  };
-  // Function to determine the color based on the status
-  const getStatusColor = (statut) => {
-    if (statut === 'En cours') return 'green'; 
-    else if (statut === 'Impayée') return 'red';
-    else if (statut === 'A payé') return 'pink';
-    else if (statut === 'Payée') return 'blue';
-   
-  };
+ // Function to determine the color based on the status
+ const getStatusColor = (statut) => {
+  if (statut === 'en cours') return 'green';
+  else if (statut === 'réfusé') return 'red';
+  else return 'blue';
+};
   return (
     <div>
       <Navbar1 />
       <div className="all1">
         <div className='tab'>
-          <h1 style={{ padding: "1%", marginLeft: "10%" }}>Liste des Factures</h1>
+          <h1 style={{ padding: "1%", marginLeft: "10%" }}>Liste des Factures Non Traitées</h1>
           <div className='barre'>
             <div className='add_inv' onClick={handleAjoutClick}>
-              <MdAdd /> Ajouter une facture
+              <MdAdd /> Ajouter une facture 
             </div>
             <div className='add_inv' onClick={handleSearchClick}>
               <AiOutlineSearch />
@@ -195,10 +167,10 @@ const Factfournisseur = () => {
               <tr>
                 <th>Référence</th>
                 <th>Fournisseur</th>
-                <th>direction</th>
-                <th>Numéro de facture</th>
-                <th>Date de facture</th>
-                <th>PDF de facture</th>
+                <th>Direction</th>
+                <th>Numéro de Facture</th>
+                <th>Date de Facture</th>
+                <th>PDF de la Facture</th>
                 <th>Devise</th>
                 <th>Montant</th>
                 <th>Objet</th>
@@ -223,9 +195,7 @@ const Factfournisseur = () => {
                     <div className='two_icons'>
                       <MdFileDownload onClick={() => handleDownloadPdf(facture)} className='icon_style' />
                       <MdDeleteForever onClick={() => handleDelete(facture.id)} className='icon_style' />
-                      <RiFileEditFill onClick={() => handleEdit(facture.id)} className='icon_style' />
-                     
-
+                      <FcAcceptDatabase onClick={() => acceptFacture(facture.id)} className='icon_style' />
                     </div>
                   </td>
                 </tr>
@@ -233,15 +203,20 @@ const Factfournisseur = () => {
             </tbody>
           </table>
           <div className="pagination">
-          <ReactPaginate
-            previousLabel={'Précédent'}
-            nextLabel={'Suivant'}
-            breakLabel={'...'}
-            pageCount={Math.ceil(factures.length / itemsPerPage)}
-            onPageChange={handlePageClick}
-            containerClassName={'pagination'}
-            activeClassName={'active'}
-          />
+            <ReactPaginate
+              previousLabel={"Précédent"}
+              nextLabel={"Suivant"}
+              breakLabel={"..."}
+              pageCount={Math.ceil(factures.length / itemsPerPage)}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={handlePageClick}
+              containerClassName={"paginationButtons"}
+              previousLinkClassName={"previousButton"}
+              nextLinkClassName={"nextButton"}
+              disabledClassName={"paginationDisabled"}
+              activeClassName={"paginationActive"}
+            />
           </div>
         </div>
       </div>
@@ -250,4 +225,3 @@ const Factfournisseur = () => {
 };
 
 export default Factfournisseur;
-

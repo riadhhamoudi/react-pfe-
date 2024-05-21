@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../add_user/Add_user.css';
 import Navbar1 from '../navbar/Navbar_Ag';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 function Add() {
   const [name, setFirstName] = useState('');
@@ -31,9 +33,7 @@ function Add() {
     return regex.test(email);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     if (!validateEmail(email)) {
       setEmailError('Veuillez entrer une adresse email valide.');
       return;
@@ -45,6 +45,7 @@ function Add() {
     }
 
     if (newPassword !== confirmPassword) {
+      console.log('Les mots de passe ne correspondent pas !');
       setPasswordMatch(false);
       return;
     }
@@ -52,25 +53,43 @@ function Add() {
     // Prepare the data to be sent
     const userData = {
       name,
-      secondary_name,
-      telephone,
-      address,
       email,
       profil,
+      telephone,
+      secondary_name,
+      address,
       password: newPassword
     };
 
     try {
       const response = await axios.post('http://localhost:3000/api/admin', userData);
       console.log('User added:', response.data);
-      alert('User added successfully!');
+      alert('Utilisateur ajouté avec succès !');
     } catch (error) {
       console.error('Error creating user:', error.response ? error.response.data : error);
-      alert('Failed to add user.');
+      alert('Impossible ajouter un utilisateur.');
     }
   };
 
-  return ( 
+  const confirmSubmission = (event) => {
+    event.preventDefault();
+    confirmAlert({
+      title: 'Confirmation de soumission',
+      message: 'Êtes-vous sûr de vouloir ajouter cet utilisateur ?',
+      buttons: [
+        {
+          label: 'Oui',
+          onClick: handleSubmit
+        },
+        {
+          label: 'Non',
+          onClick: () => console.log('Ajout annulé')
+        }
+      ]
+    });
+  };
+
+  return (
     <div>
       <Navbar1/>
       <div className="containers rounded bg-white mt-5 mb-5" style={{ marginLeft: "10%" }}>
@@ -110,10 +129,11 @@ function Add() {
                   <label className="labels">Profil</label>
                   <select id="objet" name="objet" required onChange={e => setProfil(e.target.value)}>
                     <option defaultValue={'fournisseur'}>fournisseur</option>
+                    <option value="responsable finance">responsable finance</option>
                   </select>
                 </div>
               </div>
-            </div>
+            </div> 
           </div>
           <div className="col-md-1 vertical-separator"></div>
           <div className="col-md-4">
@@ -128,7 +148,7 @@ function Add() {
                 {passwordError && <p className="password-error">{passwordError}</p>}
                 {!passwordMatch && <p className="password-error">Les mots de passe ne correspondent pas.</p>}
               </div>
-              <button className="btn btn-primary profile-button" type="button" onClick={handleSubmit}>Enregistrer</button>
+              <button className="btn btn-primary profile-button" type="button" onClick={confirmSubmission}>Enregistrer</button>
             </div>
           </div>
         </div>

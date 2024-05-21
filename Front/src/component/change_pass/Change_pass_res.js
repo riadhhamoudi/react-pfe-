@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Change_pass.css';
-import NavbarAg from '../navbar/Navbar_admin.js';
+import NavbarAg from '../navbar/Navbar_res.js';
 import { jwtDecode } from 'jwt-decode';
 
 function Pass() {
@@ -16,7 +16,7 @@ function Pass() {
     };
 
     const handleNewPasswordChange = (event) => {
-        setNewPassword(event.target.value);
+        setNewPassword(event.target.value); 
         setPasswordMatch(event.target.value === confirmPassword);
     };
 

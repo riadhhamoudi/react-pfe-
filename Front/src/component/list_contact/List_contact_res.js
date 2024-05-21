@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Detailcontact from './detailcontact.js';
-import NavbarAg from '../navbar/Navbar_admin.js';
+import NavbarAg from '../navbar/Navbar_res.js';
 import ReactPaginate from 'react-paginate';
 
 const AdminDashboard = () => {
   const [reclamations, setReclamations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(0); // Pagination commence à 0 pour ReactPaginate
+  const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const AdminDashboard = () => {
         setReclamations(response.data);
       } catch (err) {
         setError(err.message);
-        console.error('Erreur lors de la récupération des réclamations :', err);
+        console.error('Erreur lors de la récupération des récupérations :', err);
       } finally {
         setIsLoading(false);
       }
@@ -31,7 +31,13 @@ const AdminDashboard = () => {
     fetchReclamations();
   }, []);
 
-  // Calculer les réclamations à afficher
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(reclamations.length / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+
+
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = reclamations.slice(indexOfFirstItem, indexOfLastItem);
@@ -39,18 +45,20 @@ const AdminDashboard = () => {
   const handlePageClick = (data) => {
     setCurrentPage(data.selected);
   };
+ 
 
   return (
     <div>
-      <NavbarAg />
-      <h2>Liste de Réclamations</h2>
+      <NavbarAg/>
+      <h2>List de Réclamation</h2>
       {isLoading ? (
-        <p>Loading...</p>
+        <p>Chargement...</p>
       ) : error ? (
-        <p>Error: {error}</p>
+        <p>Erreur: {error}</p>
       ) : (
         <>
           <Detailcontact feedbacks={currentItems} />
+          <div className="pagination">
           <ReactPaginate
             previousLabel={'Précédent'}
             nextLabel={'Suivant'}
@@ -63,7 +71,8 @@ const AdminDashboard = () => {
             activeClassName={'active'}
             forcePage={currentPage}
           />
-        </> 
+          </div>
+        </>
       )}
     </div>
   );

@@ -74,6 +74,14 @@
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 }
 
+
+
+
+
+
+
+
+
 /* Responsive Button Styling for Smaller Screens */
 @media (max-width: 768px) {
   .btn {

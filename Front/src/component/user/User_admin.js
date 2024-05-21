@@ -2,13 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar1 from '../navbar/Navbar_admin';
 import '../user/User.css';
-import { MdDeleteForever } from "react-icons/md";
+import { MdDeleteForever, MdEmail } from "react-icons/md";
 import { RiUserSettingsFill } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import { confirmAlert } from 'react-confirm-alert'; // Import
 
 const User = () => {
   const [users, setUsers] = useState([]);
-  const navigate=useNavigate()
+  const [currentPage, setCurrentPage] = useState(0);
+  const [usersPerPage] = useState(5);
+  const navigate = useNavigate();
+
   useEffect(() => { 
     fetchUsers();
   }, []);
@@ -16,45 +22,70 @@ const User = () => {
   const fetchUsers = () => {
     axios.get('http://localhost:3000/api/users')
       .then(response => {
-        // Filter to keep only users where 'profil' is 'fournisseur' or 'agent BOF'
+        // Filter to keep only users where 'profil' is 'fournisseur', 'agent BOF', or 'responsable finance'
         const selectedUsers = response.data.filter(user => 
-          user.profil === 'fournisseur' || user.profil === 'agent BOF'
+          user.profil === 'fournisseur' || user.profil === 'agent BOF' || user.profil === 'responsable finance'
         );
         setUsers(selectedUsers);
       })
       .catch(error => {
-        console.error('Error fetching users:', error);
+        console.error('Erreur lors de la récupération des utilisateurs :', error);
       });
   };
-  
 
   const handleAddClick = () => {
-    window.location.href = '/Add_user_admin'; 
+    window.location.href = '/ajouter_utlilisateur_admin'; 
   };
 
   const deleteUser = (id) => {
-    // Ajouter plus de détails au message de confirmation si nécessaire
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.")) {
-      const token = localStorage.getItem('token');
-      axios.delete(`http://localhost:3000/api/user/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      .then(response => {
-        alert('Utilisateur supprimé avec succès');
-        fetchUsers(); // Recharger la liste des utilisateurs après la suppression
-      })
-      .catch(error => {
-        console.error('Erreur lors de la suppression de lutilisateur:', error);
-        alert('Échec de la suppression de lutilisateur');
-      });
-    }
+    const token = localStorage.getItem('token');
+    axios.delete(`http://localhost:3000/api/user/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      alert('Utilisateur supprimé avec succès');
+      fetchUsers();
+    })
+    .catch(error => {
+      console.error('Erreur lors de la suppression de utilisateur :', error);
+      alert('Échec de la suppression de utilisateur');
+    });
   };
-  
-  const handlclick = (id) => {
-    navigate(`/edituser/${id}`);
-  }
+
+  const confirmDelete = (id) => {
+    confirmAlert({
+      title: 'Confirmation de suppression',
+      message: 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?',
+      buttons: [
+        {
+          label: 'Oui',
+          onClick: () => deleteUser(id)
+        },
+        {
+          label: 'Non',
+          onClick: () => {}
+        }
+      ]
+    });
+  };
+
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected);
+  };
+
+  const handleUserClick = (id) => {
+    navigate(`/modifier_utilisateur_admin/${id}`);
+  };
+
+  const handleContact = (email) => {
+    window.location.href = `mailto:${email}`;
+  };
+
+  // Calculer les utilisateurs à afficher pour la page courante
+  const offset = currentPage * usersPerPage;
+  const currentUsers = users.slice(offset, offset + usersPerPage);
 
   return ( 
     <div>
@@ -88,43 +119,37 @@ const User = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {users.map(user => (
+                    {currentUsers.map(user => (
                       <tr key={user.id}>
                         <td className="pl-4">{user.id}</td>
                         <td>
                           <h5 className="font-medium mb-0">{user.name}</h5>
-                          
                         </td>
                         <td>
-                        <h5 className="font-medium mb-0">{user.secondary_name}</h5>
-                         
+                          <h5 className="font-medium mb-0">{user.secondary_name}</h5>
                         </td>
                         <td>
-                        <h5 className="font-medium mb-0">{user.profil}</h5>
-                          
+                          <h5 className="font-medium mb-0">{user.profil}</h5>
                         </td>
                         <td>
-                        <h5 className="font-medium mb-0">{user.email}</h5>
-                          
+                          <h5 className="font-medium mb-0">{user.email}</h5>
                         </td>
                         <td>
-                        <h5 className="font-medium mb-0">{user.adress}</h5>
-                         
+                          <h5 className="font-medium mb-0">{user.address}</h5>
                         </td>
                         <td>
-                        <h5 className="font-medium mb-0">{user.telephone}</h5>
-                          
+                          <h5 className="font-medium mb-0">{user.telephone}</h5>
                         </td>
-                 
-   
                         <td>
                           <div className='two_icons'>
                             <div className='one_icon'>
-                              <MdDeleteForever onClick={() => deleteUser(user.id)} style={{ cursor: 'pointer' }} />
+                              <MdDeleteForever onClick={() => confirmDelete(user.id)} style={{ cursor: 'pointer' }} />
                             </div>
                             <div className='one_icon'>
-                            <RiUserSettingsFill onClick={() => handlclick(user.id)} style={{ cursor: 'pointer' }} />
-
+                              <RiUserSettingsFill onClick={() => handleUserClick(user.id)} style={{ cursor: 'pointer' }} />
+                            </div>
+                            <div className='one_icon'>
+                              <MdEmail onClick={() => handleContact(user.email)} style={{ cursor: 'pointer' }} />
                             </div>
                           </div>
                         </td>
@@ -133,6 +158,19 @@ const User = () => {
                   </tbody>
                 </table>
               </div>
+              <ReactPaginate
+                previousLabel={'Précédent'}
+                nextLabel={'Suivant'}
+                breakLabel={'...'}
+                breakClassName={'break-me'}
+                pageCount={Math.ceil(users.length / usersPerPage)}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageClick}
+                containerClassName={'pagination'}
+                subContainerClassName={'pages pagination'}
+                activeClassName={'active'}
+              />
             </div>
           </div>
         </div>

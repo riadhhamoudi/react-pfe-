@@ -57,7 +57,7 @@ function Form() {
     try { 
       const response = await axios.post('http://localhost:3000/api/facture_res', data);
       alert('Facture créée avec succès !'); 
-      window.location.href = '/Listes_factures_admin';
+      window.location.href = '/Listes_factures_responsable';
     } catch (error) {
       console.error('Erreur lors de l’envoi du formulaire :', error.response ? error.response.data : error);
       alert('Impossible de créer la facture. Erreur: ' + (error.response ? error.response.data.message : error.message));
@@ -100,7 +100,7 @@ function Form() {
               <input type="text" id="num_po" name="num_po" placeholder="Numéro bon de commande" required onChange={handleInputChange} />
             </div>
             <div className="D_1">
-        
+             
               <label htmlFor="date_fact">Date facture:</label>
               <input type="date" id="date_fact" name="date_fact" required onChange={handleInputChange} />
 
@@ -110,7 +110,7 @@ function Form() {
               <input type="text" id="montant" name="montant" placeholder="montant" required onChange={handleInputChange} />
 
               <label htmlFor="objet">Object :</label>
-              <select id="objet" name="objet" required onChange={handleInputChange} defaultValue="NOUVELLE FACTURE">
+              <select id="objet" name="objet" required onChange={handleInputChange} defaultValue="NOUVELLE_FACTURE">
                 <option value="NOUVELLE_FACTURE">NOUVELLE FACTURE</option>
                 <option value="ANNULE_ET_REMPLACE">ANNULE ET REMPLACE</option>
                 <option value="AVOIR">AVOIR</option>
